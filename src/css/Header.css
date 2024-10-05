@@ -1,0 +1,53 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+@font-face {
+    font-family: title;
+    src: url(../font/Tenada.ttf);
+}
+@font-face {
+    font-family: info;
+    src: url(../font/Paperlogy-6SemiBold.ttf);
+}
+
+header{
+    background-color: #edeef0;
+   
+    padding-top: 40px;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+.main{
+ 
+}
+img{
+    width: 80%;
+    margin: 0;
+    padding: 0;
+}
+header ul{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width:90%;
+    left: 50%;
+    top: 60px;
+  transform: translate(-50%,-50%);
+}
+header ul li{
+    align-content:end;
+    list-style: none;
+}
+header ul li:nth-child(2){
+    text-align: left;
+}
+.header-title{
+  font-size: 90px;
+  color: #ab3b2c;
+  font-family: title;
+  margin-top: 200px;
+
+}

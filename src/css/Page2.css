@@ -1,0 +1,163 @@
+.box2-1 .first{
+line-height: 25px;
+}
+.box2-1{
+    height: 200px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.box2-1 .second{
+    padding: 10px;
+    box-sizing: border-box;
+overflow: scroll;
+overflow-x: hidden;
+border: 1px solid #ddd;
+}
+.notice{
+    padding: 10px;
+line-height: 25px;
+}
+.yes{
+    margin: 0 auto;
+    width:70%;
+    text-align: center;
+    font-family: boxtext;
+    margin-top: 50px;
+    margin-bottom: 150px;
+    height: 20px;
+    position: relative;
+    padding-left: 40px;
+    box-sizing: border-box;
+}
+/* 커스텀 체크박스 스타일 */
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border: 2px solid black; 
+    border-radius: 4px;
+    cursor: pointer;
+    position: absolute;
+    top:50%;
+    left:27%;
+    transform: translate(-50%,-50%);
+}
+.page2Line{
+    width: 100%;
+    margin:50px 0;
+}
+
+
+.plusImage{
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.show{
+    box-sizing: border-box;
+    padding: 15px;
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: flex-start; 
+    box-sizing: border-box; 
+    padding-right: 0;
+}
+.showBorder{
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    width:90%;
+}
+@font-face {
+    font-family: secon;
+    src: url(../font/Paperlogy-5Medium.ttf);
+}
+.font{
+    font-family: secon;
+  font-size: 14px;
+}
+/* 모달 오버레이 및 팝업 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* 배경 어둡게 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    position: relative;
+    width:70%;
+    height: 70%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+    transition: ease-in 0.2s;
+}
+.close-button:hover{
+    color:#ab3b2c;
+}
+
+.modalVideo{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width:90%;
+    height: 90%;
+    margin: 0 auto;
+
+}
+.page2Btn{
+    width:40%;
+    margin:0 auto;
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    margin-bottom: 100px;
+}
+.page2Btn img{
+    width:15%;
+    margin:0 20px;
+}
+.page2Btn li{
+   width: 300px;
+   height: 50px;
+   font-family: secon;
+line-height: 50px;
+color: #fff;
+border-radius: 10px;
+position:relative;
+cursor: pointer;
+}
+
+.page2Btn li:nth-child(1){
+    background-color: #7d7d7d;
+}
+.page2Btn li:nth-child(1) img{
+    position:absolute;
+    top:50%;
+    left: 22%;
+    transform: translate(-50%,-50%);
+}
+.page2Btn li:nth-child(2){
+    background-color: #ab3b2c;
+    padding-left: 30px;
+    box-sizing: border-box;
+}
