@@ -1,0 +1,244 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: #edeef0;
+}
+/* circle zone */
+.circlezone{
+    text-align: center;
+margin-top: 40px;
+}
+.circle1{
+    width:40%;
+}
+.circleText{
+    display: flex;
+    width:40%;
+    margin: 0 auto;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.circleText li{
+    font-family:title;
+}
+.circleText li:nth-child(1){
+    color: #ab3b2c;
+}
+.circleText li:nth-child(2){
+    color: #a1a1a1;
+}
+.circleText li:nth-child(3){
+    color: #a1a1a1;
+}
+/* circle zone end*/
+hr{
+    height: 2px;
+    border: none;
+    background-color: #d7d7d7;
+    width:90%;
+    margin: 0 auto;
+    margin-top:30px;
+    margin-bottom: 70px;
+}
+li{
+    list-style: none;
+}
+.red{
+    color: #ab3b2c;
+}
+section{
+    width:60%;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+.plusPage{
+    margin-top: 100px;
+}
+.info{
+    font-family: info;
+    margin-bottom: 10px;
+    font-size: 18px;
+    margin-top: 50px;
+}
+input[type="text"]{
+    border:none;
+    outline: none;
+    font-family: boxtext;
+    font-size: 15px;
+}
+.box{
+    display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 8px 0px;
+    width:99%;
+    overflow: hidden;
+}
+@font-face {
+    font-family: boxtext;
+    src: url(../font/Paperlogy-5Medium.ttf);
+}
+.box li{
+    text-align: left;
+   
+}
+.box li:nth-child(1){
+    box-sizing: border-box;
+    padding-left: 20px;
+    flex: 0.15;
+}
+.box li:nth-child(2){
+    box-sizing: border-box;
+    padding-left: 20px;
+    flex: 1;
+}
+
+.first{
+    font-family: boxtext;
+ text-align: center;
+line-height: 60px;
+width:140px;
+}
+.second{
+line-height: 60px;
+font-family: boxtext;
+width: 100%;
+}
+.box2{
+    width:49%;
+    margin-right:9px;
+    float: left;
+}
+.box2 li:nth-child(1){
+    flex: 0.37 !important;
+}
+.box3 li:nth-child(1){
+    flex: 0.37 !important;
+}
+.box3{
+    float: left;
+    width:49%;
+    margin-bottom: 70px;
+}
+.three{
+    color: #ab3b2c;
+    font-size: 13px;
+}
+video {
+    width: 100%; /* 너비 100%로 설정 */
+    height: auto; /* 비율 유지 */
+    display: block; /* 블록 요소로 설정 */
+    margin: 10px 0; /* 위 아래 마진 추가 */
+    z-index: 1; /* 다른 요소 위에 표시 */
+}
+.show{
+    width:500px;
+    height: auto;
+}
+article{
+    margin-top: 50px;
+}
+.plusPage{
+    margin-top: 50px;
+
+}
+textarea{
+    border:none;
+    outline: none;
+    font-family: boxtext;
+    font-size: 15px;
+    margin-top: 20px;
+   width:700px;
+   height: 160px;
+}
+.box4{
+    height: 200px;
+}
+.drop{
+    box-sizing: border-box;
+    padding: 4px;
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: flex-start; 
+    width: 99%;
+    box-sizing: border-box; 
+}
+.movieTitle{
+    width:70%;
+}
+@font-face {
+    font-family: imgtext;
+    src: url(../font/Paperlogy-5Medium.ttf);
+}
+.imgText{
+    font-family: imgtext;
+    font-size: 15px;
+    margin: 15px 0;
+}
+.plus img{
+    width:9%;
+    position:absolute;
+    top:54%;
+    left:25%;
+    transform: translate(-50%, -50%);
+
+}
+.plus{
+    display: block;
+    cursor: pointer;
+    position: relative;
+    width: 190px;
+    background-color: #333333;
+    color: #fff;
+    font-family: imgtext;
+margin: 0 auto;
+text-align: center;
+height: 45px;
+margin-top: 50px;
+margin-bottom: 50px;
+line-height: 45px;
+font-size: 16px;
+border-radius: 10px;
+box-sizing: border-box;
+padding-left: 30px;
+}
+.del{
+    float: right;
+    margin-right: 1%;
+}
+.del i{
+    font-size: 25px;
+    cursor: pointer;
+transition: ease-in 0.2s;
+}
+.del i:hover{
+    color: #ab3b2c;
+}
+.next{
+    width:250px;
+    background-color: #ab3b2c;
+    color: #fff;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-family: imgtext;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    position:relative;
+    margin-bottom: 70px;
+    margin-top: 70px;
+    cursor: pointer;
+}
+.next img{
+    width: 15%;
+    position:absolute;
+    top:54%;
+    right:10%;
+    transform: translate(-50%, -50%);
+
+}
+.red{
+    color: #ab3b2c!important;
+}
