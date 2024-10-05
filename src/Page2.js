@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
+import axios from 'axios';
 import Header from "./Header";
 import "./css/Page1.css";
 import "./css/Page2.css";
 import circle2 from '../src/image/page2.png';
 import right from "./image/right.png";
 import left from "./image/left.png";
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+
 function Page2() {
     const location = useLocation();
     const { works } = location.state || { works: [] }; 
@@ -24,9 +24,36 @@ function Page2() {
         setIsModalOpen(false);
         setSelectedVideoUrl(null);
     };
+
+    const handleSubmit = async () => {
+        const formData = new FormData();
+        
+        works.forEach((work, index) => {
+            if (work.videoFile) formData.append(`video_${index}`, work.videoFile);
+            if (work.thumbnail) formData.append(`thumbnail_${index}`, work.thumbnail);
+            formData.append(`title_${index}`, work.title);
+            formData.append(`description_${index}`, work.description);
+            formData.append(`director_${index}`, work.director);
+            formData.append(`actors_${index}`, work.actors);
+            formData.append(`additionalInfo_${index}`, work.additionalInfo);
+        });
+
+        try {
+            const response = await axios.post('병덕쓰 주소', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []); 
+
     return (
         <div>
             <Header />
@@ -40,7 +67,7 @@ function Page2() {
             </ul>
             <hr />
             <section>
-            <ul className="box box2-1">
+                <ul className="box box2-1">
                     <li className="first">출품 시 유의사항</li>
                     <li className="second">
                         <div className='notice'>
@@ -57,6 +84,7 @@ function Page2() {
                         </div>
                     </li>
                 </ul>
+
                 <ul className="box box2-1">
                     <li className="first">저작권 이용<br />및 개인 정보<br />이용 동의</li>
                     <li className="second">
@@ -64,7 +92,7 @@ function Page2() {
                             저작권 이용 <br />
                             1) 출품 유의 사항에 기재되어 있는 저작권 및 사용권 내용과 동의합니다. <br />
                             2) 출품작에 대한 저작권 및 소유권은 출품자에게 있으며, 수상 후에도 출품자에게 귀속됩니다. <br />
-                            3) 주최사는 출품작을 영리 또는 비영리 목적으로 독점적 공표, 복제, 공연, 공중송신, 방송, 전송, 전시 및 배포(이하 ‘공표 등’) 할 수 있는 권리를 갖습니다. 공표 등은 주최사 등 사무국, 협력사를 통하여, 온라인 및 오프라인 매체를 통해 이루어질 수 있습니다. (예: 인쇄물, 웹사이트, 홍보영상 등) <br />
+                            3) 주최사는 출품작을 영리 또는 비영리 목적으로 독점적 공표, 복제, 공연, 공중송신, 방송, 전송, 전시 및 배포(이하 ‘공표 등’) 할 수 있는 권리를 갖습니다. <br />
                             4) 출품작에 실질적인 개변이 없고, 내용, 형식, 제호의 동일성이 유지되는 범위 내에서 출품작의 포맷, 크기 등 형식을 수정 또는 변경할 수 있으며, 이를 주최사의 필요에 따라 활용할 수 있습니다. <br />
                             5) 출품작에 쓰인 음악, 영상 등 저작권 및 초상권 등 기타 권리에 대한 문제와 관련해 주최사가 개별적으로 확인하지 않으며, 저작권 침해 등 발생하는 어떠한 문제도 주최사는 책임지지 않습니다. <br />
                             일반 규정 및 개인정보 이용 동의 <br />
@@ -80,14 +108,13 @@ function Page2() {
                         </div>
                     </li>
                 </ul>
+                
                 <div className='yes'>
                     <input type='checkbox'></input>모든 내용을 확인하였으며 이에 동의합니다.
                 </div>
                 
                 {works.map((work, index) => (
                     <div key={index}>
-                        
-      
                         <p className="info">출품정보 확인</p>
                         <ul className="box box1">
                             <li className="first">작품제목<span className="red">*</span></li>
@@ -106,33 +133,16 @@ function Page2() {
                             <li className="second">{work.actors}</li>
                         </ul>
                         <ul className="box box1">
-                            <li className="first">추가입력사항</li>
+                            <li className="first">추가정보</li>
                             <li className="second">{work.additionalInfo}</li>
                         </ul>
-                        <ul className="box drop">
-                            <li className="first">작품 영상 첨부</li>
-                            <li className="show">
-                                <div className='showBorder'>
-                                    {work.thumbnail ? (
-                                        <img 
-                                            src={URL.createObjectURL(work.thumbnail)} 
-                                            alt="썸네일" 
-                                            className='plusImage'
-                                            onClick={() => openModal(work.videoUrl)} // 썸네일 클릭 시 모달 열기
-                                        />
-                                    ) : (
-                                        <span>썸네일이 업로드되지 않았습니다.</span>
-                                    )}
-                                    <div>
-                                        <span className='font'>{work.videoName || '업로드되지 않음'} {work.videoDuration || '0:00'}</span><br />
-                                        
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        {index < works.length - 1 && <hr className='page2Line' />}
+                        {work.videoFile && (
+                            <button className="videoBtn" onClick={() => openModal(URL.createObjectURL(work.videoFile))}>
+                                {work.title} 비디오 보기
+                            </button>
+                        )}
+                        {index + 1 < works.length && <hr className='page2Line' />}
                     </div>
-                    
                 ))}
 
                 {/* 모달 컴포넌트 */}
@@ -141,7 +151,6 @@ function Page2() {
                         <div className="modal-content">
                             <button className="close-button" onClick={closeModal}>
                                 <i className="xi-close-circle-o"></i>
-                         
                             </button>
                             {selectedVideoUrl && (
                                 <video className='modalVideo' controls>
@@ -154,8 +163,8 @@ function Page2() {
                 )}
             </section>
             <ul className='page2Btn'>
-                <Link to="/"><li className='what'><img src={left}></img>이전</li></Link>
-                <Link to="/page3"><li className='what2'>출품하기<img src={right}></img></li></Link>
+                <Link to="/"><li className='what'><img src={left} alt="이전" />이전</li></Link>
+                <Link to="/page3"><li className='what2' onClick={handleSubmit}>출품하기<img src={right} alt="출품하기" /></li></Link>
             </ul>
         </div>
     );
