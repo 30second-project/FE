@@ -1,0 +1,47 @@
+.result{
+    width:60%;
+    height:400px;
+    background-color: #fff;
+    margin:0 auto;
+    margin-bottom: 50px;
+    text-align: center;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding:50px 0;
+}
+.result img{
+    width:15%;
+    margin:20px 0;
+}
+@font-face {
+    font-family: p3;
+    src: url(../font/Paperlogy-6SemiBold.ttf);
+}
+@font-face {
+    font-family: p3-2;
+    src: url(../font/Paperlogy-4Regular.ttf);
+}
+.p3-1{
+    font-family:p3;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+.p3-2{
+    font-family:p3-2;
+    font-size: 15px;
+}
+.home{
+    font-family: p3-2;
+    width:30%;
+    margin:0 auto;
+    background-color: #ab3b2c;
+    text-align: center;
+    color: #fff;
+    border-radius: 10px;
+    height: 50px;
+    line-height: 50px;
+    margin-bottom: 50px;
+}
+.home img{
+    width:8%;
+}

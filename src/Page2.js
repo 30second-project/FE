@@ -154,8 +154,8 @@ function Page2() {
                 )}
             </section>
             <ul className='page2Btn'>
-                <Link to="/"><li><img src={left}></img>이전</li></Link>
-                <li>출품하기<img src={right}></img></li>
+                <Link to="/"><li className='what'><img src={left}></img>이전</li></Link>
+                <Link to="/page3"><li className='what2'>출품하기<img src={right}></img></li></Link>
             </ul>
         </div>
     );

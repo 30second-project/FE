@@ -131,6 +131,7 @@ input[type="checkbox"] {
     text-align: center;
     justify-content: space-between;
     margin-bottom: 100px;
+    
 }
 .page2Btn img{
     width:15%;
@@ -147,17 +148,24 @@ position:relative;
 cursor: pointer;
 }
 
-.page2Btn li:nth-child(1){
-    background-color: #7d7d7d;
-}
-.page2Btn li:nth-child(1) img{
+
+.page2Btn li:nth-child(2) img{
     position:absolute;
     top:50%;
     left: 22%;
     transform: translate(-50%,-50%);
 }
-.page2Btn li:nth-child(2){
+.what{
+    padding-right:30px;
+     box-sizing: border-box;
+     background-color: #7d7d7d;
+ 
+ }
+.what2{
+   padding-left: 30px;
+   box-sizing: border-box;
     background-color: #ab3b2c;
-    padding-left: 30px;
-    box-sizing: border-box;
+}
+a{
+    text-decoration: none;
 }
