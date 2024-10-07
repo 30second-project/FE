@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom';
 import check from "./image/check.png";
 import right from "./image/right.png";
 function Page3() {
-    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []); 
     return (
         <div>
             <Header />

@@ -129,6 +129,7 @@ function Page1() {
                             <li className="second">
                                 <input 
                                     type="text" 
+                                    required
                                     className="movieTitle" 
                                     placeholder="작품제목을 입력해주세요."
                                     onChange={(e) => updateWorkInfo(index, { title: e.target.value })}
