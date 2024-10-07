@@ -147,7 +147,7 @@ function Page1() {
                         </ul>
                         <ul className="box box1">
                             <li className="first">감독명<span className="red">*</span></li>
-                            <li className="second">
+                            <li className="second movieInput">
                                 <input 
                                     type="text" 
                                     className="movieTitle" 
@@ -158,7 +158,7 @@ function Page1() {
                         </ul>
                         <ul className="box box1">
                             <li className="first">배우명</li>
-                            <li className="second">
+                            <li className="second movieInput">
                                 <input 
                                     type="text" 
                                     className="movieTitle" 

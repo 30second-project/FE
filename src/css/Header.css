@@ -51,3 +51,13 @@ header ul li:nth-child(2){
   margin-top: 200px;
 
 }
+/* 태블릿 미디어 쿼리*/
+@media (min-width: 768px) and (max-width: 1024px) {
+    header{
+        padding-top: 1px;
+    }
+    .header-title{
+        font-size: 80px;
+        margin-top: 180px;
+      }
+}
