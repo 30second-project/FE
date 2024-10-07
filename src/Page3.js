@@ -31,6 +31,7 @@ function Page3() {
             <div className="home">
                 "POBA 30초 모바일 영화제" 사이트 바로가기&nbsp;&nbsp;<img src={right}></img>
             </div>
+            <Link to="/SubmissionTable"><h2>ex) 관리자 페이지 연결</h2></Link>
         </div>
     );
 }

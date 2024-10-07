@@ -68,7 +68,7 @@ function Page2() {
             <hr />
             <section>
                 <ul className="box box2-1">
-                    <li className="first">출품 시 유의사항</li>
+                    <li className="first">출품 시<br /> 유의사항</li>
                     <li className="second">
                         <div className='notice'>
                             출품 시 유의사항<br />
@@ -145,13 +145,13 @@ function Page2() {
                                             src={URL.createObjectURL(work.thumbnail)} 
                                             alt="썸네일" 
                                             className='plusImage'
-                                            onClick={() => openModal(work.videoUrl)} // 썸네일 클릭 시 모달 열기
+                                            onClick={() => openModal(work.videoUrl)} 
                                         />
                                     ) : (
                                         <span>썸네일이 업로드되지 않았습니다.</span>
                                     )}
                                     <div>
-                                        <span className='font'>{work.videoName || '업로드되지 않음'} {work.videoDuration || '0:00'}</span><br />
+                                        <span className='font'>{work.videoName || '업로드되지 않음'}&nbsp; ({work.videoDuration || '0:00'})</span><br />
                                     </div>
                                 </div>
                             </li>
@@ -182,6 +182,8 @@ function Page2() {
                 <Link to="/"><li className='what'><img src={left} alt="이전" />이전</li></Link>
                 <Link to="/page3"><li className='what2' onClick={handleSubmit}>출품하기<img src={right} alt="출품하기" /></li></Link>
             </ul>
+        { /*업로드 되는 거 진행 창이 필요할 거 같음.*/ }
+
         </div>
     );
 }
