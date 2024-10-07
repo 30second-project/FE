@@ -136,14 +136,30 @@ function Page2() {
                             <li className="first">추가정보</li>
                             <li className="second">{work.additionalInfo}</li>
                         </ul>
-                        {work.videoFile && (
-                            <button className="videoBtn" onClick={() => openModal(URL.createObjectURL(work.videoFile))}>
-                                {work.title} 비디오 보기
-                            </button>
-                        )}
-                        {index + 1 < works.length && <hr className='page2Line' />}
+                        <ul className="box drop">
+                            <li className="first">작품 영상 첨부</li>
+                            <li className="show">
+                                <div className='showBorder'>
+                                    {work.thumbnail ? (
+                                        <img 
+                                            src={URL.createObjectURL(work.thumbnail)} 
+                                            alt="썸네일" 
+                                            className='plusImage'
+                                            onClick={() => openModal(work.videoUrl)} // 썸네일 클릭 시 모달 열기
+                                        />
+                                    ) : (
+                                        <span>썸네일이 업로드되지 않았습니다.</span>
+                                    )}
+                                    <div>
+                                        <span className='font'>{work.videoName || '업로드되지 않음'} {work.videoDuration || '0:00'}</span><br />
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        {index < works.length - 1 && <hr className='page2Line' />}
                     </div>
                 ))}
+
 
                 {/* 모달 컴포넌트 */}
                 {isModalOpen && (
