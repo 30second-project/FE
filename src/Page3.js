@@ -6,6 +6,7 @@ import circle3 from '../src/image/page3.png';
 import { Link } from 'react-router-dom';
 import check from "./image/check.png";
 import right from "./image/right.png";
+import { useEffect } from "react";
 function Page3() {
     useEffect(() => {
         window.scrollTo(0, 0);
