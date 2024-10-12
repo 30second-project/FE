@@ -6,6 +6,7 @@ import upload from "../../image/upload.png";
 const ImgDrop = (props) => {
     const wrapperRef = useRef(null);
     const [file, setFile] = useState(null);
+    const [fileUrl, setFileUrl] = useState(null); // 파일 URL을 저장할 상태 추가
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
@@ -27,24 +28,22 @@ const ImgDrop = (props) => {
             }
 
             setFile(newFile);
-            if (typeof props.onFileChange === 'function') {
-                props.onImageChange(newFile); 
-                const fileData = {
+            setFileUrl(URL.createObjectURL(newFile)); // 파일 URL 생성
+
+            if (typeof props.onImageChange === 'function') {
+                props.onImageChange({
                     file: newFile,
-                    name: newFile.name,
-                    size: newFile.size,
-                    type: newFile.type,
-                    // 추가적인 메타데이터가 필요하면 여기에 추가할 수 있음
-                };
-                props.onFileChange(fileData); // 부모 컴포넌트에 메타데이터 전달
+                    url: URL.createObjectURL(newFile) // URL도 함께 전달
+                });
             }
         }
     };
 
     const fileRemove = () => {
         setFile(null);
-        if (typeof props.onFileChange === 'function') {
-            props.onFileChange(null); // 부모 컴포넌트에 null 전달
+        setFileUrl(null); // URL도 초기화
+        if (typeof props.onImageChange === 'function') {
+            props.onImageChange(null); // 부모 컴포넌트에 null 전달
         }
     };
 
@@ -54,24 +53,19 @@ const ImgDrop = (props) => {
     };
 
     return (
-        <>
-            <div
-                ref={wrapperRef}
-                className="drop-file-input"
-                onDragEnter={onDragEnter}
-                onDragLeave={onDragLeave}
-                onDrop={onDrop}
-            >
-                <div className="drop-file-input__label label2">
-                    <img src={upload} className='upload' alt="Upload" /><br />
-                    <b className='file-b'>이미지 파일을 여기로 드래그 하세요</b><br />
-                    <p className='drop-smalltext file-b'>
-                        ※ 권장 사이즈: 1280 X 720 px (가로형)
-                    </p>
-                </div>
-                <input type="file" accept="image/*" onChange={onFileDrop} />
-            </div>
-            {file && ( // 파일이 있을 경우에만 미리보기 표시
+        <div ref={wrapperRef} className="drop-file-input" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDrop={onDrop}>
+            {!file ? ( // 파일이 없을 경우 드롭 영역 표시
+                <>
+                    <div className="drop-file-input__label label2">
+                        <img src={upload} className='upload' alt="Upload" /><br />
+                        <b className='file-b'>이미지 파일을 여기로 드래그 하세요</b><br />
+                        <p className='drop-smalltext file-b'>
+                            ※ 권장 사이즈: 1280 X 720 px (가로형)
+                        </p>
+                    </div>
+                    <input type="file" accept="image/*" onChange={onFileDrop} />
+                </>
+            ) : ( // 파일이 선택되었을 때 미리보기 표시
                 <div className="drop-file-preview">
                     <div className="drop-file-preview__item">
                         <div className="drop-file-preview__item__info">
@@ -82,18 +76,18 @@ const ImgDrop = (props) => {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 
 // PropTypes 설정
 ImgDrop.propTypes = {
-    onFileChange: PropTypes.func.isRequired, // 필수 prop으로 설정
+    onImageChange: PropTypes.func.isRequired, // 이미지 변경 핸들러 추가
 };
 
 // 기본 props 설정
 ImgDrop.defaultProps = {
-    onFileChange: () => {}, // 기본적으로 빈 함수
+    onImageChange: () => {}, // 기본적으로 빈 함수
 };
 
 export default ImgDrop;

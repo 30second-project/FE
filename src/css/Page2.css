@@ -169,3 +169,10 @@ cursor: pointer;
 a{
     text-decoration: none;
 }
+.videoPreview{
+    user-select: none;
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    cursor: pointer;
+}

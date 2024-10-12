@@ -9,20 +9,24 @@ body{
 /* circle zone */
 .circlezone{
     text-align: center;
-margin-top: 40px;
+margin-top: 20px;
 }
 .circle1{
-    width:40%;
+    width:30%;
+  
 }
 .circleText{
     display: flex;
-    width:40%;
+    width: 37%;
     margin: 0 auto;
-    justify-content: space-between;
+    justify-content:space-around;
     margin-top: 10px;
+    font-size: 13px;
+    
 }
 .circleText li{
     font-family:title;
+    text-align: center;
 }
 .circleText li:nth-child(1){
     color: #ab3b2c;
@@ -151,7 +155,7 @@ textarea{
     font-family: boxtext;
     font-size: 15px;
     margin-top: 22px;
-   width:700px;
+   width:95%;
    height: 160px;
    resize: none;
 }

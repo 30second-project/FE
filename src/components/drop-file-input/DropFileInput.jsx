@@ -55,38 +55,31 @@ const DropFileInput = (props) => {
     };
 
     return (
-        <>
-            <div
-                ref={wrapperRef}
-                className="drop-file-input"
-                onDragEnter={onDragEnter}
-                onDragLeave={onDragLeave}
-                onDrop={onDrop}
-            >
-                <div className="drop-file-input__label">
-                    <img src={upload} className='upload' alt="Upload" /><br />
-                    <b className='file-b'>파일을 여기로 드래그 하세요</b><br />
-                    <p className='drop-smalltext file-b'>
-                        영상 업로드시 영상 크기에 따라 10~60초 가량 소모됩니다.<br />
-                        ※ 모든 형식의 비디오를 지원합니다.
-                    </p>
-                </div>
-                <input type="file" onChange={onFileDrop} accept="video/*" />
-            </div>
-            {file && ( 
+        <div ref={wrapperRef} className="drop-file-input" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDrop={onDrop}>
+            {!file ? ( // 파일이 없을 경우 드롭 영역 표시
+                <>
+                    <div className="drop-file-input__label">
+                        <img src={upload} className='upload' alt="Upload" /><br />
+                        <b className='file-b'>파일을 여기로 드래그 하세요</b><br />
+                        <p className='drop-smalltext file-b'>
+                            영상 업로드시 영상 크기에 따라 10~60초 가량 소모됩니다.<br />
+                            ※ 모든 형식의 비디오를 지원합니다.
+                        </p>
+                    </div>
+                    <input type="file" onChange={onFileDrop} accept="video/*" />
+                </>
+            ) : ( // 파일이 선택되었을 때 미리보기 표시
                 <div className="drop-file-preview">
-                   
                     <div className="drop-file-preview__item">
                         <div className="drop-file-preview__item__info">
-                            <p>{file.name}
-                            {formatFileSize(file.size)}
-                             ({videoDuration})</p> {/* 비디오 길이 표시 */}
+                            <p>{file.name}</p>
+                            <p>{formatFileSize(file.size)} ({videoDuration})</p> {/* 비디오 길이 표시 */}
                         </div>
                         <span className="drop-file-preview__item__del" onClick={fileRemove}>x</span>
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 

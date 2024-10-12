@@ -23,6 +23,11 @@ header{
 .main{
  
 }
+header img{
+    width: 60%;
+    margin: 0;
+    padding: 0;
+}
 img{
     width: 80%;
     margin: 0;
@@ -40,15 +45,21 @@ header ul{
 header ul li{
     align-content:end;
     list-style: none;
+  text-align: center;
 }
+
 header ul li:nth-child(2){
-    text-align: left;
+    text-align: center;
+    padding-right: 2%;
+    box-sizing: border-box;
 }
+
+
 .header-title{
-  font-size: 90px;
+  font-size: 60px;
   color: #ab3b2c;
   font-family: title;
-  margin-top: 200px;
+  margin-top: 120px;
 
 }
 /* 태블릿 미디어 쿼리*/
