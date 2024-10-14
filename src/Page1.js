@@ -9,6 +9,7 @@ import next from "./image/right.png";
 import { Link, useNavigate } from 'react-router-dom';
 
 function Page1() {
+    const Server_IP = process.env.REACT_APP_Server_IP;
     const [works, setWorks] = useState([{
         title: '',
         description: '',
