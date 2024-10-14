@@ -65,7 +65,21 @@ section{
     font-family: info;
     margin-bottom: 10px;
     font-size: 18px;
-    margin-top: 50px;
+    display: inline-block;
+    float: left;
+}
+.del{
+    float: right;
+    display: inline-block;
+    margin-right: 1%;
+}
+.del i{
+    font-size: 25px;
+    cursor: pointer;
+transition: ease-in 0.2s;
+}
+.del i:hover{
+    color: #ab3b2c;
 }
 input[type="text"]{
     border:none;
@@ -213,18 +227,7 @@ border-radius: 10px;
 box-sizing: border-box;
 padding-left: 30px;
 }
-.del{
-    float: right;
-    margin-right: 1%;
-}
-.del i{
-    font-size: 25px;
-    cursor: pointer;
-transition: ease-in 0.2s;
-}
-.del i:hover{
-    color: #ab3b2c;
-}
+
 .next{
     width:250px;
     background-color: #ab3b2c;
@@ -251,7 +254,14 @@ transition: ease-in 0.2s;
 .red{
     color: #ab3b2c!important;
 }
-
+.Tend{
+    font-family: boxtext;
+    margin-bottom: 70px;
+}
+button{
+    display: block;
+    border: 0;
+}
 @media (min-width: 768px) and (max-width: 1024px) {
     /* circle zone */
     .circlezone{

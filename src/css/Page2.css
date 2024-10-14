@@ -13,6 +13,25 @@ overflow: scroll;
 overflow-x: hidden;
 border: 1px solid #ddd;
 }
+.box2-2{
+    height: 200px;
+    padding: 15px;
+    box-sizing: border-box;
+    padding-left: 0;
+}
+.box2-2 .second{
+    padding: 10px;
+    box-sizing: border-box;
+overflow: scroll;
+overflow-x: hidden;
+border: 1px solid #ddd;
+}
+.first2{
+    text-align: center!important;
+    font-size: 15px;
+    line-height: 30px;
+    margin-right: 15px;
+}
 .notice{
     padding: 10px;
 line-height: 25px;

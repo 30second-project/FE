@@ -43,11 +43,6 @@
 }
 
 
-
-.drop-file-preview {
-    margin-top: 30px;
-}
-
 .drop-file-preview p {
     font-weight: 500;
 }
@@ -64,7 +59,7 @@
     padding: 15px;
     border-radius: 20px;
     width:inherit;
-    width: 700px;
+    width: 100%;
 }
 
 .drop-file-preview__item img {
@@ -72,12 +67,7 @@
     margin-right: 20px;
 }
 
-.drop-file-preview__item__info {
-   
-   
-    width: 300px;
 
-}
 
 .drop-file-preview__item__del {
     background-color: var(--box-bg);
@@ -93,8 +83,7 @@
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    opacity: 0;
-    transition: 0.8s ease-in;
+  
 }
 
 .drop-file-preview__item:hover .drop-file-preview__item__del {
@@ -107,6 +96,8 @@
 }
 .drop-file-preview{
     margin-top:-100px;
+    width:90%;
+    margin-left:-50px;
     }
 @media (min-width: 768px) and (max-width: 1024px) {
     .drop-file-input {
