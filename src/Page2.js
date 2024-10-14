@@ -15,6 +15,10 @@ function Page2() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
     const [isChecked, setIsChecked] = useState(false); 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const openModal = (videoUrl) => {
         setSelectedVideoUrl(videoUrl);
         setIsModalOpen(true);
@@ -34,6 +38,8 @@ function Page2() {
     
         if (!isChecked) {
             alert('모든 내용을 확인하고 동의해야 출품할 수 있습니다.');
+                window.scrollTo(0, 400);
+          
             return;
         }
     
@@ -67,10 +73,7 @@ function Page2() {
         }
     };
     
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
+ 
     return (
         <div>
             <Header />
@@ -155,16 +158,14 @@ function Page2() {
                             <li className="second">{work.additionalInfo}</li>
                         </ul>
 
-                        {/* 2칸 구성: 비디오 재생과 썸네일 첨부 */}
+                    
                         <div className="two-columns">
-                            {/* 작품 영상 첨부 */}
                             <ul className="box drop video-box">
                                 <li className="first">작품 영상 첨부</li>
                                 <li className="show">
                                     <div className="showBorder">
                                         {work.videoFile ? (
                                             <>
-                                                {/* 비디오 표시, 클릭 시 모달 열림 */}
                                                 <video
                                                     onClick={() => openModal(URL.createObjectURL(work.videoFile))}
                                                     className="videoPreview"
@@ -185,16 +186,14 @@ function Page2() {
                                     </div>
                                 </li>
                             </ul>
-
-                            {/* 작품 썸네일 첨부 */}
                             <ul className="box drop thumbnail-box">
                                 <li className="first">작품 썸네일 첨부</li>
                                 <li className="show">
                                     <div className="showBorder">
-                                        {work.thumbnail ? ( // thumbnail이 존재하는 경우에만 확인
+                                        {work.thumbnail ? (
                                             <>
                                                 <img
-                                                    src={URL.createObjectURL(work.thumbnail)} // 썸네일이 File 객체인 경우
+                                                    src={URL.createObjectURL(work.thumbnail)} 
                                                     alt="썸네일"
                                                     className="plusImage"
                                                 />
@@ -213,8 +212,6 @@ function Page2() {
                         {index < works.length - 1 && <hr className="page2Line" />}
                     </div>
                 ))}
-
-                {/* 모달 컴포넌트 */}
                 {isModalOpen && (
                     <div className="modal-overlay">
                         <div className="modal-content">
@@ -235,7 +232,7 @@ function Page2() {
     <li className='what' onClick={() => navigate(-1)}><img src={left} alt="이전" />이전</li>
     <li className='what2' onClick={handleSubmit}>출품하기<img src={right} alt="출품하기" /></li>
 </ul>
-            {/*업로드 진행 창이 필요할 수 있습니다.*/}
+            {/*업로드 진행 창이 필요할 수도 있겠다..*/}
         </div>
     );
 }
