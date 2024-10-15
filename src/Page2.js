@@ -10,6 +10,7 @@ import left from "./image/left.png";
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 
 function Page2() {
+    const Server_IP = process.env.REACT_APP_Server_IP;
     const location = useLocation();
     const { works } = location.state || { works: [] };
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,7 +61,7 @@ function Page2() {
         });
     
         try {
-            const response = await axios.post('병덕쓰 주소', formData, {
+            const response = await axios.post(`${Server_IP}/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

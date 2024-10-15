@@ -4,6 +4,7 @@ import SubmissionSearch from './SubmissionSearch';
 import SubmissionDetails from './SubmissionDetails';
 
 const SubmissionTable = () => {
+    const Server_IP = process.env.REACT_APP_Server_IP;
     const [submissions, setSubmissions] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("");
     const [category, setCategory] = useState("name");
@@ -12,9 +13,15 @@ const SubmissionTable = () => {
 
     const fetchSubmissions = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/submissions');
+            const response = await axios.get(`${Server_IP}/upload/submissions`);
             console.log(response.data);
-            setSubmissions(response.data);
+            // API 응답이 배열인지 확인
+            if (Array.isArray(response.data)) {
+                setSubmissions(response.data);
+            } else {
+                console.error("제출 데이터 형식이 올바르지 않습니다:", response.data);
+                setSubmissions([]); // 빈 배열로 초기화
+            }
         } catch (error) {
             console.error("제출 데이터를 불러오는 중 오류가 발생했습니다!", error);
         }
@@ -22,8 +29,13 @@ const SubmissionTable = () => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/submissions/search?keyword=${searchKeyword}&category=${category}`);
-            setSubmissions(response.data);
+            const response = await axios.get(`${Server_IP}/api/submissions/search?keyword=${searchKeyword}&category=${category}`);
+            if (Array.isArray(response.data)) {
+                setSubmissions(response.data);
+            } else {
+                console.error("검색 결과 형식이 올바르지 않습니다:", response.data);
+                setSubmissions([]); // 빈 배열로 초기화
+            }
         } catch (error) {
             console.error("제출을 검색하는 중 오류가 발생했습니다!", error);
         }
@@ -31,23 +43,21 @@ const SubmissionTable = () => {
 
     const handleDownloadExcelWithSearch = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/submissions/download/search?keyword=${searchKeyword}&category=${category}`, {
-                responseType: 'blob', // 서버에서 바이너리 파일을 받을 때 설정
+            const response = await axios.get(`${Server_IP}/api/submissions/download/search?keyword=${searchKeyword}&category=${category}`, {
+                responseType: 'blob',
             });
-    
-            // Blob 객체 URL 생성 및 다운로드 처리
+
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', '제출리스트_검색결과.xlsx');
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link); // 다운로드 후 링크 요소 제거
+            document.body.removeChild(link);
         } catch (error) {
             console.error("검색된 엑셀 파일 다운로드 중 오류가 발생했습니다!", error);
         }
     };
-    
 
     const openModal = (submission) => {
         setSelectedSubmission(submission);
@@ -97,7 +107,7 @@ const SubmissionTable = () => {
                             <td>{submission.submissionTime}</td>
                             <td>{submission.agreement ? "동의함" : "동의하지 않음"}</td>
                             <td>
-                                {submission.videos.length > 0
+                                {Array.isArray(submission.videos) && submission.videos.length > 0
                                     ? submission.videos.map(video => <div key={video.id}>{video.videoUrl}</div>)
                                     : "비디오 없음"}
                             </td>
