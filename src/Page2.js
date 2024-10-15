@@ -32,7 +32,7 @@ function Page2() {
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked); 
     };
-    const navigate = useNavigate(); // useNavigate 추가
+    const navigate = useNavigate(); 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
@@ -135,7 +135,7 @@ function Page2() {
                     <input type='checkbox'  checked={isChecked} onChange={handleCheckboxChange}></input>모든 내용을 확인하였으며 이에 동의합니다.
                 </div>
                 {works.map((work, index) => (
-                    <div key={index}>
+                    <div key={index} className='page2'>
                         <p className="info">출품정보 확인</p>
                         <ul className="box box1">
                             <li className="first">작품제목<span className="red">*</span></li>
@@ -161,7 +161,7 @@ function Page2() {
                     
                         <div className="two-columns">
                             <ul className="box drop video-box">
-                                <li className="first">작품 영상 첨부</li>
+                                <li className="first"><span className='Tbr'>작품 영상</span> 첨부</li>
                                 <li className="show">
                                     <div className="showBorder">
                                         {work.videoFile ? (
@@ -187,7 +187,7 @@ function Page2() {
                                 </li>
                             </ul>
                             <ul className="box drop thumbnail-box">
-                                <li className="first">작품 썸네일 첨부</li>
+                                <li className="first"><span className='Tbr'>작품 썸네일</span> 첨부</li>
                                 <li className="show">
                                     <div className="showBorder">
                                         {work.thumbnail ? (

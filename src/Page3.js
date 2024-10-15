@@ -27,11 +27,11 @@ function Page3() {
                 <img src={check}></img>
                 <p className="p3-1">출품이 정상적으로 완료되었습니다.</p>
                 <p className="p3-2">
+                    <div className="Rfont">
+                        <div className="result-box1">
                 출품 적합 여부 확인 후 업로드가 진행됩니다.
-POBA 30초 모바일영화제 사이트에 업로드 되기까지 최대 3일 소요됩니다.<br/>
-기타 문의사항은 02-525-6262로 전화 부탁드립니다.
-
-
+POBA 30초 모바일영화제 사이트에 업로드 되기까지 최대 3일 소요됩니다.<br/></div>
+기타 문의사항은 02-525-6262로 전화 부탁드립니다.</div>
                 </p>
             </div>
             <div className="home"><a href="https://poba30.com">

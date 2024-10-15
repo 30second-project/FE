@@ -103,4 +103,18 @@
     .drop-file-input {
         height:140px;
     }
+    .drop-file-preview{
+        margin-top: -40px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .drop-file-input {
+        height:110px;
+        font-size: 8px;
+    }
+    .drop-file-preview{
+        margin-top: -40px;
+        width:80%;
+      
+    }
 }

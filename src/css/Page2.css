@@ -195,3 +195,196 @@ a{
     border-radius: 10px;
     cursor: pointer;
 }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+   
+.page2Btn{
+    width:90%;
+}
+.page2Btn li{
+    height: 60px;
+    line-height: 60px;
+    flex: 1;
+}
+.page2Btn li:nth-child(1){
+    margin-right: 5px;
+}
+
+.page2Btn li:nth-child(2){
+    margin-left: 5px;
+}
+input[type="checkbox"] {
+    position: absolute;
+    top:50%;
+    left:28%;
+    transform: translate(-50%,-50%);
+}
+}
+@media only screen and (max-width: 767px) {
+.first{
+    font-size: 13px;
+}
+
+.box li:nth-child(1) {
+    padding-left: 5px;
+}
+        .first2{
+            text-align: center!important;
+            font-size: 12px;
+            line-height: 18px;
+            margin-right: 15px;
+           padding-left: 10px;
+        }
+        .notice{
+            padding: 2px;
+        line-height: 15px;
+        font-size: 10px;
+        }
+        .box2-2{
+            padding-left: 15px;
+            text-align: left;
+        }
+        .yes{
+            font-size: 12px;
+        }
+        /* 커스텀 체크박스 스타일 */
+        input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            top:40%;
+            left:12%;
+        }
+        .page2Line{
+            width: 100%;
+            margin:50px 0;
+        }
+        .second{
+            font-size: 13px;
+        }
+        .box li:nth-child(1) {
+            padding-left: 15px;
+        }
+        .font{
+            font-size: 12px;
+        }
+        .page2 video{
+            width:70%;
+        }
+        .page2 img{
+            width:70%;
+        }
+        .plusImage{
+            width: 300px;
+            height: auto;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .show{
+            box-sizing: border-box;
+            padding: 15px;
+            display: flex; 
+            flex-wrap: wrap; 
+            align-items: flex-start; 
+            box-sizing: border-box; 
+            padding-right: 0;
+        }
+        .showBorder{
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            width:90%;
+        }
+        @font-face {
+            font-family: secon;
+            src: url(../font/Paperlogy-5Medium.ttf);
+        }
+       
+        /* 모달 오버레이 및 팝업 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); /* 배경 어둡게 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        
+        .modal-content {
+            position: relative;
+            width:70%;
+            height: 70%;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: #fff;
+            transition: ease-in 0.2s;
+        }
+        .close-button:hover{
+            color:#ab3b2c;
+        }
+        
+        .modalVideo{
+            position:absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width:90%;
+            height: 90%;
+            margin: 0 auto;
+        
+        }
+        .page2Btn{
+            width:90%;
+            margin:0 auto;
+            display: flex;
+            text-align: center;
+            justify-content: space-between;
+            margin-bottom: 100px;
+            
+        }
+        .page2Btn img{
+            width:15%;
+            margin:0 20px;
+        }
+        .page2Btn li{
+           width: 300px;
+           height: 50px;
+           font-family: secon;
+        line-height: 50px;
+        color: #fff;
+        border-radius: 10px;
+        position:relative;
+        cursor: pointer;
+        }
+        
+        
+        .page2Btn li:nth-child(2) img{
+            position:absolute;
+            top:50%;
+            left: 22%;
+            transform: translate(-50%,-50%);
+        }
+        .what{
+          margin-right: 5px;
+         
+         }
+        .what2{
+          margin-left: 5px;
+        }
+       
+       
+}

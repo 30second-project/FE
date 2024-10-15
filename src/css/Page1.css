@@ -383,9 +383,10 @@ button{
         width: 99%;
         box-sizing: border-box; 
     }
-    .movieTitle{
-        width:70%;
-    }
+   .second-textarea textarea{
+    width:400px;
+    height: inherit;
+   }
     .imgText{
         font-family: imgtext;
         font-size: 15px;
@@ -457,6 +458,203 @@ button{
     .red{
         color: #ab3b2c!important;
     }
-    
+   
   }
+  
+@media only screen and (max-width: 767px) {
+    .circlezone{
+        margin-top: 20px;
+        }
+        .circle1{
+            width:80%;
+        }
+        .circleText{
+            display: flex;
+            width:80%;
+            margin: 0 auto;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+       
+        /* circle zone end*/
+        hr{
+            height: 2px;
+            border: none;
+            background-color: #d7d7d7;
+            width:90%;
+            margin: 0 auto;
+            margin-top:30px;
+            margin-bottom: 40px;
+        }
+        section{
+            width:90%;
+            margin: 0 auto;
+            margin-bottom: 50px;
+        }
+        input[type="text"]{
+            border:none;
+            outline: none;
+            font-family: boxtext;
+            font-size: 13px;
+          width:200px;
+        }
+        .box{
+            display: flex;
+            background-color: #fff;
+            border-radius: 10px;      
+
+        }
+        .box li:nth-child(1){
+            box-sizing: border-box;
+            padding-left: 20px;
+            flex: 0.2;
+        }
+        .box li:nth-child(2){
+            box-sizing: border-box;
+            padding-left: 20px;
+            flex: 0.8;
+        }
+        
+        .first{
+            font-family: boxtext;
+         text-align: center;
+        line-height: 60px;
+        width:140px;
+        font-size: 14px;
+            }
+        .second{
+        line-height: 60px;
+        font-family: boxtext;
+        width: 100%;
+        }
+        .box2{
+            width:99%;
+            margin-right:9px;
+            float: left;
+        }
+        .box2 li:nth-child(1){
+            flex: 0.2 !important;
+        }
+        .box3 li:nth-child(1){
+            flex: 0.2 !important;
+        }
+        .box3{
+            float: left;
+            width:99%;
+            margin-bottom: 50px;
+        }
+        
+        video {
+            width: 100%; /* 너비 100%로 설정 */
+            height: auto; /* 비율 유지 */
+            display: block; /* 블록 요소로 설정 */
+            margin: 10px 0; /* 위 아래 마진 추가 */
+            z-index: 1; /* 다른 요소 위에 표시 */
+        }
+        .show{
+            width:500px;
+            height: auto;
+        }
+        article{
+            margin-top: 50px;
+        }
+        .plusPage{
+            margin-top: 50px;
+        }
+        textarea{
+            border:none;
+            outline: none;
+            font-family: boxtext;
+            font-size: 13px;
+            margin-top: 20px;
+           width:200px;
+           height: 160px;
+        }
+      
+        .box4{
+            height: 200px;
+        }
+        .drop{
+            box-sizing: border-box;
+            padding: 4px;
+            display: flex; 
+            flex-wrap: wrap; 
+            align-items: flex-start; 
+            width: 99%;
+            box-sizing: border-box; 
+        }
+        .second-textarea textarea{
+            width:99%;
+            height: inherit;
+           }
+        .imgText{
+            font-family: imgtext;
+            font-size: 15px;
+            margin: 15px 0;
+        }
+        .plus img{
+            width:9%;
+            position:absolute;
+            top:54%;
+            left:25%;
+            transform: translate(-50%, -50%);
+        
+        }
+        .plus{
+        display: block;
+        cursor: pointer;
+        position: relative;
+        width: 190px;
+        background-color: #333333;
+        color: #fff;
+        font-family: imgtext;
+        margin: 0 auto;
+        text-align: center;
+        height: 45px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        line-height: 45px;
+        font-size: 16px;
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding-left: 30px;
+        }
+        .del{
+            float: right;
+            margin-right: 1%;
+        }
+        .del i{
+            font-size: 25px;
+            cursor: pointer;
+        transition: ease-in 0.2s;
+        }
+        .del i:hover{
+            color: #ab3b2c;
+        }
+        .next{
+            width:90%;
+            height: 50px;
+            line-height: 50px;
+           
+            font-size: 22px;
+        }
+        .next img{
+            width: 10%;
+            position:absolute;
+            top:54%;
+            right:25%;
+            transform: translate(-50%, -50%);
+        
+        }
+        .red{
+            color: #ab3b2c!important;
+        }
+        .Tbr{
+            display: block;
+            margin-bottom: -40px;
+      }
+      .Tend{
+        font-size: 10px;
+      }
+}
   

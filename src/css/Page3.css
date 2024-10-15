@@ -1,42 +1,48 @@
-.result{
-    width:60%;
-    height:400px;
+.result {
+    width: 60%;
+    height: 400px;
     background-color: #fff;
-    margin:0 auto;
+    margin: 0 auto;
     margin-bottom: 50px;
     text-align: center;
     box-sizing: border-box;
     border-radius: 10px;
-    padding:50px 0;
-   
-   
+    padding: 50px 0;
+
+
 }
-.result img{
-    width:8%;
+
+.result img {
+    width: 8%;
     margin-top: 20px;
     margin-bottom: 50px;
 }
+
 @font-face {
     font-family: p3;
     src: url(../font/Paperlogy-6SemiBold.ttf);
 }
+
 @font-face {
     font-family: p3-2;
     src: url(../font/Paperlogy-3Light.ttf);
 }
-.p3-1{
-    font-family:p3;
+
+.p3-1 {
+    font-family: p3;
     font-size: 35px;
     margin-bottom: 20px;
 }
-.p3-2{
-    font-family:p3-2;
+
+.p3-2 {
+    font-family: p3-2;
     font-size: 15px;
 }
-.home{
+
+.home {
     font-family: p3-2;
-    width:30%;
-    margin:0 auto;
+    width: 30%;
+    margin: 0 auto;
     background-color: #ab3b2c;
     text-align: center;
     color: #fff;
@@ -45,10 +51,104 @@
     line-height: 50px;
     margin-bottom: 200px;
 }
-.home img{
-    width:8%;
+
+.home img {
+    width: 8%;
 }
-a{
+
+a {
     color: #fff;
     text-decoration: none;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .result {
+        width: 90%;
+        height: 400px;
+        background-color: #fff;
+        margin: 0 auto;
+        margin-bottom: 50px;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 10px;
+        padding: 50px 0;
+        line-height: 22px;
+    }
+
+    .p3-2 {
+        font-size: 15px;
+    }
+
+    .result-box1 {
+        width: 40%;
+        margin: 0 auto;
+    }
+
+    .home {
+
+        width: 90%;
+        font-size: 20px;
+        border-radius: 10px;
+        height: 80px;
+        line-height: 80px;
+        margin-bottom: 200px;
+    }
+
+    .result img {
+        width: 15%;
+        margin-top: 20px;
+        margin-bottom: 50px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .result {
+        width: 90%;
+        height: 400px;
+        background-color: #fff;
+        margin: 0 auto;
+        margin-bottom: 50px;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 10px;
+        padding: 50px 0;
+        line-height: 22px;
+    }
+
+    .p3-1 {
+        font-size: 20px;
+    }
+
+    .p3-2 {
+        font-size: 12px;
+    }
+
+    .result-box1 {
+        width: 50%;
+        margin: 0 auto;
+    }
+.Rfont{
+    font-size: 10px;
+    line-height: 15px;
+}
+    .result {
+
+        font-size: 10px;
+        line-height: 15px;
+    }
+
+    .home {
+        width: 90%;
+        font-size: 15px;
+        border-radius: 10px;
+        height: 80px;
+        line-height: 80px;
+        margin-bottom: 200px;
+    }
+
+    .result img {
+        width: 15%;
+        margin-top: 20px;
+        margin-bottom: 50px;
+    }
 }

@@ -2,11 +2,12 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import './drop-file-input.css';
 import upload from "../../image/upload.png";
-
+import { useEffect } from 'react';
 const ImgDrop = (props) => {
     const wrapperRef = useRef(null);
     const [file, setFile] = useState(null);
     const [fileUrl, setFileUrl] = useState(null); // 파일 URL을 저장할 상태 추가
+    const [imgText, setimgText] = useState("");
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
@@ -51,14 +52,29 @@ const ImgDrop = (props) => {
     const formatFileSize = (sizeInBytes) => {
         return (sizeInBytes / 1024).toFixed(2) + ' KB'; // 소수점 두 자리까지 표시
     };
+    const updatePlaceholder = () => {
+        if (window.innerWidth < 1024) {
+          setimgText("여기를 터치하여 파일을 첨부해주세요");
+         
+        } else {
+        setimgText("이미지 파일을 여기로 그래그 하세요");
+        
+        }
+      };
 
+      useEffect(() => {
+        updatePlaceholder();
+        window.addEventListener("resize", updatePlaceholder);
+  
+        return () => window.removeEventListener("resize", updatePlaceholder);
+      }, []);
     return (
         <div ref={wrapperRef} className="drop-file-input" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDrop={onDrop}>
             {!file ? ( // 파일이 없을 경우 드롭 영역 표시
                 <>
                     <div className="drop-file-input__label label2">
                         <img src={upload} className='upload' alt="Upload" /><br />
-                        <b className='file-b'>이미지 파일을 여기로 드래그 하세요</b><br />
+                        <b className='file-b'>{imgText}</b><br />
                         <p className='drop-smalltext file-b'>
                             ※ 권장 사이즈: 1280 X 720 px (가로형)
                         </p>

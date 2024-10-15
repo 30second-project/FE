@@ -9,6 +9,9 @@ import next from "./image/right.png";
 import { Link, useNavigate } from 'react-router-dom';
 
 function Page1() {
+    const [placeholderText, setPlaceholderText] = useState("");
+    const [placeholderText2, setPlaceholderText2] = useState("");
+    const [placeholderText3, setPlaceholderText3] = useState("");
     const [works, setWorks] = useState([{
         title: '',
         description: '',
@@ -111,6 +114,30 @@ function Page1() {
         }
     };
 
+        const updatePlaceholder = () => {
+          if (window.innerWidth < 1024) {
+            setPlaceholderText("감독이름을 입력해주세요\n (2명 이상인 경우, 쉼표로 구분해주세요)");
+            setPlaceholderText2("배우이름을 입력해주세요\n (2명 이상인 경우, 쉼표로 구분해주세요)");
+            setPlaceholderText3("촬영, 편집 등 추가 정보를\n 입력해주세요 (예) 촬영 : 홍길동, 편집 : 홍길동)");
+          } else {
+            setPlaceholderText("감독이름을 입력해주세요 (2명 이상인 경우, 쉼표로 구분해주세요)");
+            setPlaceholderText2("배우이름을 입력해주세요 (2명 이상인 경우, 쉼표로 구분해주세요)");
+            setPlaceholderText3("촬영, 편집 등 추가 정보를 입력해주세요 (예) 촬영 : 홍길동, 편집 : 홍길동)");
+          }
+        };
+
+        useEffect(() => {
+          updatePlaceholder();
+          window.addEventListener("resize", updatePlaceholder);
+    
+          return () => window.removeEventListener("resize", updatePlaceholder);
+        }, []);
+    
+     
+    
+    
+   
+   
     return (
         <div>
             <Header />
@@ -171,12 +198,11 @@ function Page1() {
                         </ul>   
                         <ul className="box box1">
                             <li className="first">감독명<span className="red">*</span></li>
-                            <li className="second movieInput">
-                                <input 
-                                    type="text" 
+                            <li className="second second-textarea">
+                                <textarea
                                     className="movieTitle" 
                                     required
-                                    placeholder="감독 이름을 입력해주세요 (2명 이상인 경우, 쉼표로 구분해주세요)"
+                                    placeholder={placeholderText}
                                     value={work.director}
                                     onChange={(e) => updateWorkInfo(index, { director: e.target.value })}
                                 />
@@ -184,37 +210,34 @@ function Page1() {
                         </ul>
                         <ul className="box box1">
                             <li className="first">배우명</li>
-                            <li className="second movieInput">
-                                <input 
-                                    type="text" 
+                            <li className="second movieInput second-textarea">
+                                <textarea 
                                     className="movieTitle" 
-                                    
-                                    placeholder="배우 이름을 입력해주세요 (2명 이상인 경우, 쉼표로 구분해주세요)."
+                                    placeholder={placeholderText2}
                                     value={work.actors}
                                     onChange={(e) => updateWorkInfo(index, { actors: e.target.value })}
                                 />
                             </li>
                         </ul>
                         <ul className="box box1">
-                            <li className="first">추가입력사항</li>
-                            <li className="second">
-                                <input 
-                                    type="text" 
+                            <li className="first"><span className='Tbr'>추가입력</span>사항</li>
+                            <li className="second second-textarea">
+                                <textarea 
                                     className="movieTitle" 
-                                    placeholder="촬영, 편집 등 추가 정보를 입력해주세요 (예) 촬영 : 홍길동, 편집 : 홍길동)"
+                                  placeholder={placeholderText3}
                                     value={work.additionalInfo}
                                     onChange={(e) => updateWorkInfo(index, { additionalInfo: e.target.value })}
                                 />
                             </li>
                         </ul>
                         <ul className="box drop">
-                            <li className="first">작품 영상 첨부<span className="red">*</span></li>
+                            <li className="first"><span className='Tbr'>작품 영상</span> 첨부<span className="red">*</span></li>
                             <li className="drop">
                                 <DropFileInput onFileChange={(fileData) => handleFileChange(index, fileData)} />
                             </li>
                         </ul>
                         <ul className="box drop end">
-                            <li className="first">작품 썸네일 첨부</li>
+                            <li className="first"><span className='Tbr'>작품 썸네일</span> 첨부</li>
                             <li className="drop">
                                 <ImgDrop 
                                     onImageChange={(fileData) => updateImageFileData(index, fileData)}

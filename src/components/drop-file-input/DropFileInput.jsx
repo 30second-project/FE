@@ -2,11 +2,12 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import './drop-file-input.css';
 import upload from "../../image/upload.png";
-
+import { useEffect } from 'react';
 const DropFileInput = (props) => {
     const wrapperRef = useRef(null);
     const [file, setFile] = useState(null);
     const [videoDuration, setVideoDuration] = useState('0:00'); // 비디오 길이 상태
+    const [Text, setText] = useState("");
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
@@ -53,14 +54,30 @@ const DropFileInput = (props) => {
     const formatFileSize = (sizeInBytes) => {
         return (sizeInBytes / 1024).toFixed(2) + ' KB';
     };
+    const updatePlaceholder = () => {
+        if (window.innerWidth < 1024) {
+          setText("여기를 터치하여 파일을 첨부해주세요");
+         
+        } else {
+        setText("파일을 여기로 드래그 하세요");
+        
+        }
+      };
 
+      useEffect(() => {
+        updatePlaceholder();
+        window.addEventListener("resize", updatePlaceholder);
+  
+        return () => window.removeEventListener("resize", updatePlaceholder);
+      }, []);
+  
     return (
         <div ref={wrapperRef} className="drop-file-input" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDrop={onDrop}>
             {!file ? ( // 파일이 없을 경우 드롭 영역 표시
                 <>
                     <div className="drop-file-input__label">
                         <img src={upload} className='upload' alt="Upload" /><br />
-                        <b className='file-b'>파일을 여기로 드래그 하세요</b><br />
+                        <b className='file-b'>{Text}</b><br />
                         <p className='drop-smalltext file-b'>
                             영상 업로드시 영상 크기에 따라 10~60초 가량 소모됩니다.<br />
                             ※ 모든 형식의 비디오를 지원합니다.
