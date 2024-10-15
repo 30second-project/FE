@@ -48,7 +48,6 @@ line-height: 25px;
     padding-left: 40px;
     box-sizing: border-box;
 }
-/* 커스텀 체크박스 스타일 */
 input[type="checkbox"] {
     width: 20px;
     height: 20px;
@@ -95,14 +94,13 @@ input[type="checkbox"] {
     font-family: secon;
   font-size: 14px;
 }
-/* 모달 오버레이 및 팝업 스타일 */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); /* 배경 어둡게 */
+    background-color: rgba(0, 0, 0, 0.7); 
     display: flex;
     justify-content: center;
     align-items: center;

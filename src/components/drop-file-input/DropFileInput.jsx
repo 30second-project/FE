@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 const DropFileInput = (props) => {
     const wrapperRef = useRef(null);
     const [file, setFile] = useState(null);
-    const [videoDuration, setVideoDuration] = useState('0:00'); // 비디오 길이 상태
+    const [videoDuration, setVideoDuration] = useState('0:00'); 
     const [Text, setText] = useState("");
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
@@ -16,10 +16,10 @@ const DropFileInput = (props) => {
     const onFileDrop = (e) => {
         const newFile = e.target.files[0];
         if (newFile) {
-            console.log('Selected File:', newFile); // 파일 정보 로그
+            console.log('Selected File:', newFile); 
             setFile(newFile);
 
-            // 비디오 길이 계산
+            
             const videoElement = document.createElement('video');
             videoElement.src = URL.createObjectURL(newFile);
             videoElement.onloadedmetadata = () => {
@@ -29,7 +29,7 @@ const DropFileInput = (props) => {
                 const formattedDuration = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
                 setVideoDuration(formattedDuration);
                 
-                // 부모 컴포넌트에 비디오 메타데이터 전달
+              
                 if (typeof props.onFileChange === 'function') {
                     props.onFileChange({
                         videoFile: newFile,
@@ -45,9 +45,9 @@ const DropFileInput = (props) => {
 
     const fileRemove = () => {
         setFile(null);
-        setVideoDuration('0:00'); // 비디오 길이 초기화
+        setVideoDuration('0:00'); 
         if (typeof props.onFileChange === 'function') {
-            props.onFileChange(null); // 부모 컴포넌트에 null 전달
+            props.onFileChange(null); 
         }
     };
 
@@ -73,7 +73,7 @@ const DropFileInput = (props) => {
   
     return (
         <div ref={wrapperRef} className="drop-file-input" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDrop={onDrop}>
-            {!file ? ( // 파일이 없을 경우 드롭 영역 표시
+            {!file ? (
                 <>
                     <div className="drop-file-input__label">
                         <img src={upload} className='upload' alt="Upload" /><br />
@@ -85,7 +85,7 @@ const DropFileInput = (props) => {
                     </div>
                     <input type="file" onChange={onFileDrop} accept="video/*" />
                 </>
-            ) : ( // 파일이 선택되었을 때 미리보기 표시
+            ) : ( 
                 <div className="drop-file-preview">
                     <div className="drop-file-preview__item">
                         <div className="drop-file-preview__item__info">
@@ -100,14 +100,12 @@ const DropFileInput = (props) => {
     );
 };
 
-// PropTypes 설정
 DropFileInput.propTypes = {
-    onFileChange: PropTypes.func.isRequired, // 필수 prop으로 설정
+    onFileChange: PropTypes.func.isRequired, 
 };
 
-// 기본 props 설정
 DropFileInput.defaultProps = {
-    onFileChange: () => {}, // 기본적으로 빈 함수
+    onFileChange: () => {},
 };
 
 export default DropFileInput;

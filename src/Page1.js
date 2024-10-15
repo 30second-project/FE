@@ -31,16 +31,14 @@ function Page1() {
         thumbnailUrl: '',
     }]);
 
-    const navigate = useNavigate();  // useNavigate 훅 사용
+    const navigate = useNavigate();  
 
-    // 작품 정보 업데이트 함수
     const updateWorkInfo = (index, data) => {
         const updatedWorks = [...works];
         updatedWorks[index] = { ...updatedWorks[index], ...data };
         setWorks(updatedWorks);
     };
 
-    // 작품 삭제 기능 추가
     const handleRemoveWork = (index) => {
         const newWorks = works.filter((_, i) => i !== index);
         setWorks(newWorks);
@@ -82,7 +80,6 @@ function Page1() {
         setWorks(newWorks);
     };
 
-    // PlusPage 추가 함수
     const handleAddPlusPage = () => {
         if (works.length < 3) { 
             setWorks([...works, { thumbnail: null, thumbnailUrl: '' }]);
@@ -93,24 +90,21 @@ function Page1() {
         window.scrollTo(0, 0);
     }, []);
 
-    // 필수 입력 필드 확인 함수
     const validateRequiredFields = () => {
         for (let work of works) {
             if (!work.title || !work.description || !work.director || !work.videoFile) {
-                return false;  // 필수 항목이 비어있으면 false 반환
+                return false;  
             }
         }
-        return true;  // 모든 필수 항목이 입력되었으면 true 반환
+        return true; 
     };
 
-    // 제출 시 필수 필드 체크 및 페이지 이동
+  
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateRequiredFields()) {
-            // 모든 필수 필드가 입력되었을 경우 다음 페이지로 이동
             navigate('/page2', { state: { works } });
         } else {
-            // 필수 필드가 누락되었을 경우 경고창 띄움
             alert('모든 필수 항목을 입력해주세요.');
         }
     };

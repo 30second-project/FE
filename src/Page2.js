@@ -7,7 +7,7 @@ import "./css/Page2.css";
 import circle2 from '../src/image/page2.png';
 import right from "./image/right.png";
 import left from "./image/left.png";
-import { useNavigate } from 'react-router-dom'; // useNavigate 추가
+import { useNavigate } from 'react-router-dom'; 
 
 function Page2() {
     const Server_IP = process.env.REACT_APP_Server_IP;
