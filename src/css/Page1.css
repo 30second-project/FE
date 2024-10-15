@@ -119,6 +119,7 @@ input[type="text"]{
  text-align: center;
 line-height: 60px;
 width:140px;
+font-size: 14px;
 }
 .second{
 line-height: 60px;
@@ -146,11 +147,11 @@ width: 100%;
     font-size: 13px;
 }
 video {
-    width: 100%; /* 너비 100%로 설정 */
-    height: auto; /* 비율 유지 */
-    display: block; /* 블록 요소로 설정 */
-    margin: 10px 0; /* 위 아래 마진 추가 */
-    z-index: 1; /* 다른 요소 위에 표시 */
+    width: 100%; 
+    height: auto; 
+    display: block; 
+    margin: 10px 0; 
+    z-index: 1; 
 }
 .show{
     width:500px;
@@ -188,9 +189,7 @@ textarea{
     width: 99%;
     box-sizing: border-box; 
 }
-.movieTitle{
-    width:70%;
-}
+
 @font-face {
     font-family: imgtext;
     src: url(../font/Paperlogy-5Medium.ttf);
@@ -261,6 +260,13 @@ padding-left: 30px;
 button{
     display: block;
     border: 0;
+}
+.second-textarea{
+    overflow: hidden;
+}
+.second-textarea textarea{
+    width:90%;
+    height: 19px;
 }
 @media (min-width: 768px) and (max-width: 1024px) {
     /* circle zone */
