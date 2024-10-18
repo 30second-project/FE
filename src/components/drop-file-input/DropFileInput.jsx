@@ -104,7 +104,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                             {/* 비디오 미리보기 추가 */}
                             {videoUrl && (
                                 <div className="video-preview">
-                                    <video className="uploaded-video" controls>
+                                    <video className="uploaded-video">
                                         <source src={videoUrl} type="video/mp4" />
                                         브라우저가 비디오 태그를 지원하지 않습니다.
                                     </video>
