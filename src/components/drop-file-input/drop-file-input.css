@@ -7,6 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 
 }
 .drop-file-input__label img{
@@ -54,12 +55,11 @@
 .drop-file-preview__item {
     position: relative;
     display: flex;
-    margin-bottom: 10px;
+margin-top: 50px;
     background-color: #d7d7d7;
     padding: 15px;
-    border-radius: 20px;
-    width:inherit;
-    width: 100%;
+    border-radius: 20px;        
+    font-size: 10px;
 }
 
 .drop-file-preview__item img {
@@ -95,9 +95,20 @@
     margin-top: 10px;
 }
 .drop-file-preview{
-    margin-top:-100px;
+    margin-top: -50px;
     width:90%;
-    margin-left:-50px;
+margin-left: -50px;
+
+    }
+    .video-preview{
+        width: 30%;
+    }
+    .image-preview img{
+        width:10%;
+    }
+    .video-preview video{
+        width:50%;
+
     }
 @media (min-width: 768px) and (max-width: 1024px) {
     .drop-file-input {
@@ -105,6 +116,7 @@
     }
     .drop-file-preview{
         margin-top: -40px;
+        overflow: hidden;
     }
 }
 @media only screen and (max-width: 767px) {

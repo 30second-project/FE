@@ -108,7 +108,7 @@ function Page2() {
                 </ul>
 
                 <ul className="box box2-2">
-                    <li className="first first2">저작권 이용<br />·<br />일반 규정 및 개인<br/>정보 이용 동의</li>
+                    <li className="first first2">저작권 이용<br /><span className="middle">·</span><br />일반 규정 및 개인<br/>정보 이용 동의</li>
                     <li className="second">
                         <div className='notice'>
                             저작권 이용 <br />
@@ -133,7 +133,7 @@ function Page2() {
                 </ul>
 
                 <div className='yes'>
-                    <input type='checkbox'  checked={isChecked} onChange={handleCheckboxChange}></input>모든 내용을 확인하였으며 이에 동의합니다.
+                    <input type='checkbox'  checked={isChecked} onChange={handleCheckboxChange}></input><span className="check-text">모든 내용을 확인하였으며 이에 동의합니다.</span>
                 </div>
                 {works.map((work, index) => (
                     <div key={index} className='page2'>

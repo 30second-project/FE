@@ -1,12 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './drop-file-input.css';
 import upload from "../../image/upload.png";
-import { useEffect } from 'react';
+
 const DropFileInput = (props) => {
     const wrapperRef = useRef(null);
     const [file, setFile] = useState(null);
-    const [videoDuration, setVideoDuration] = useState('0:00'); 
+    const [videoDuration, setVideoDuration] = useState('0:00');
+    const [videoUrl, setVideoUrl] = useState(null); // 비디오 URL을 위한 상태 추가
     const [Text, setText] = useState("");
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
@@ -16,10 +17,8 @@ const DropFileInput = (props) => {
     const onFileDrop = (e) => {
         const newFile = e.target.files[0];
         if (newFile) {
-            console.log('Selected File:', newFile); 
             setFile(newFile);
 
-            
             const videoElement = document.createElement('video');
             videoElement.src = URL.createObjectURL(newFile);
             videoElement.onloadedmetadata = () => {
@@ -28,8 +27,11 @@ const DropFileInput = (props) => {
                 const seconds = duration % 60;
                 const formattedDuration = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
                 setVideoDuration(formattedDuration);
-                
-              
+
+                // 비디오 URL 설정
+                setVideoUrl(URL.createObjectURL(newFile));
+
+                // 부모 컴포넌트로 파일 정보 전달
                 if (typeof props.onFileChange === 'function') {
                     props.onFileChange({
                         videoFile: newFile,
@@ -45,32 +47,32 @@ const DropFileInput = (props) => {
 
     const fileRemove = () => {
         setFile(null);
-        setVideoDuration('0:00'); 
+        setVideoDuration('0:00');
+        setVideoUrl(null); // 비디오 URL 초기화
         if (typeof props.onFileChange === 'function') {
-            props.onFileChange(null); 
+            props.onFileChange(null);
         }
     };
 
     const formatFileSize = (sizeInBytes) => {
         return (sizeInBytes / 1024).toFixed(2) + ' KB';
     };
+
     const updatePlaceholder = () => {
         if (window.innerWidth < 1024) {
-          setText("여기를 터치하여 파일을 첨부해주세요");
-         
+            setText("여기를 터치하여 파일을 첨부해주세요");
         } else {
-        setText("파일을 여기로 드래그 하세요");
-        
+            setText("파일을 여기로 드래그 하세요");
         }
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         updatePlaceholder();
         window.addEventListener("resize", updatePlaceholder);
-  
+
         return () => window.removeEventListener("resize", updatePlaceholder);
-      }, []);
-  
+    }, []);
+
     return (
         <div ref={wrapperRef} className="drop-file-input" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDrop={onDrop}>
             {!file ? (
@@ -85,15 +87,25 @@ const DropFileInput = (props) => {
                     </div>
                     <input type="file" onChange={onFileDrop} accept="video/*" />
                 </>
-            ) : ( 
+            ) : (
                 <div className="drop-file-preview">
                     <div className="drop-file-preview__item">
                         <div className="drop-file-preview__item__info">
+                             {/* 비디오 미리보기 추가 */}
+                    {videoUrl && (
+                        <div className="video-preview">
+                            <video className="uploaded-video">
+                                <source src={videoUrl} type="video/mp4" />
+                                브라우저가 비디오 태그를 지원하지 않습니다.
+                            </video>
+                        </div>
+                    )}
                             <p>{file.name}</p>
-                            <p>{formatFileSize(file.size)} ({videoDuration})</p> {/* 비디오 길이 표시 */}
+                            <p>{formatFileSize(file.size)} ({videoDuration})</p> 
                         </div>
                         <span className="drop-file-preview__item__del" onClick={fileRemove}>x</span>
                     </div>
+                   
                 </div>
             )}
         </div>
@@ -101,7 +113,7 @@ const DropFileInput = (props) => {
 };
 
 DropFileInput.propTypes = {
-    onFileChange: PropTypes.func.isRequired, 
+    onFileChange: PropTypes.func.isRequired,
 };
 
 DropFileInput.defaultProps = {

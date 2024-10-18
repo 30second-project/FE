@@ -62,6 +62,19 @@ header ul li:nth-child(2){
   margin-top: 120px;
 
 }
+@font-face {
+    font-family:headerFont;
+    src: url(../font/Paperlogy-4Regular.ttf);
+}
+.header-font{
+    font-family:headerFont;
+  color: #ab3b2c;
+  font-size: 15px;
+  margin: 20px 0px;
+  margin-bottom: 50px;
+
+}
+
 /* 태블릿 미디어 쿼리*/
 @media (min-width: 768px) and (max-width: 1024px) {
     header{
@@ -71,4 +84,12 @@ header ul li:nth-child(2){
         font-size: 80px;
         margin-top: 180px;
       }
+    
+}
+@media only screen and (max-width: 767px) {
+    .header-font{
+font-size: 9px;
+width:90%;
+margin: 0 auto;
+    }
 }

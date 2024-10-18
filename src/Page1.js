@@ -13,23 +13,25 @@ function Page1() {
     const [placeholderText, setPlaceholderText] = useState("");
     const [placeholderText2, setPlaceholderText2] = useState("");
     const [placeholderText3, setPlaceholderText3] = useState("");
-    const [works, setWorks] = useState([{
-        title: '',
-        description: '',
-        director: '',
-        actors: '',
-        additionalInfo: '',
-        videoFile: null,
-        videoName: '',
-        videoSize: '',
-        videoDuration: '',
-        videoUrl: '',
-        thumbnail: null,
-        imgName: '',
-        imgSize: '',
-        imgType: '',
-        thumbnailUrl: '',
-    }]);
+    const [works, setWorks] = useState([
+        {
+            title: '',
+            description: '',
+            director: '',
+            actors: '',
+            additionalInfo: '',
+            videoFile: null,
+            videoName: '',
+            videoSize: '',
+            videoDuration: '',
+            videoUrl: '',
+            thumbnail: null,
+            imgName: '',
+            imgSize: '',
+            imgType: '',
+            thumbnailUrl: '',
+        }
+    ]);
 
     const navigate = useNavigate();  
 
@@ -99,7 +101,6 @@ function Page1() {
         return true; 
     };
 
-  
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateRequiredFields()) {
@@ -109,30 +110,25 @@ function Page1() {
         }
     };
 
-        const updatePlaceholder = () => {
-          if (window.innerWidth < 1024) {
+    const updatePlaceholder = () => {
+        if (window.innerWidth < 1024) {
             setPlaceholderText("감독이름을 입력해주세요\n (2명 이상인 경우, 쉼표로 구분해주세요)");
             setPlaceholderText2("배우이름을 입력해주세요\n (2명 이상인 경우, 쉼표로 구분해주세요)");
             setPlaceholderText3("촬영, 편집 등 추가 정보를\n 입력해주세요 (예) 촬영 : 홍길동, 편집 : 홍길동)");
-          } else {
+        } else {
             setPlaceholderText("감독이름을 입력해주세요 (2명 이상인 경우, 쉼표로 구분해주세요)");
             setPlaceholderText2("배우이름을 입력해주세요 (2명 이상인 경우, 쉼표로 구분해주세요)");
             setPlaceholderText3("촬영, 편집 등 추가 정보를 입력해주세요 (예) 촬영 : 홍길동, 편집 : 홍길동)");
-          }
-        };
+        }
+    };
 
-        useEffect(() => {
-          updatePlaceholder();
-          window.addEventListener("resize", updatePlaceholder);
+    useEffect(() => {
+        updatePlaceholder();
+        window.addEventListener("resize", updatePlaceholder);
     
-          return () => window.removeEventListener("resize", updatePlaceholder);
-        }, []);
+        return () => window.removeEventListener("resize", updatePlaceholder);
+    }, []);
     
-     
-    
-    
-   
-   
     return (
         <div>
             <Header />
@@ -174,7 +170,7 @@ function Page1() {
                                     type="text" 
                                     required
                                     className="movieTitle" 
-                                    placeholder="작품제목을 입력해주세요."
+                                    placeholder="작품제목을 입력해주세요"
                                     value={work.title}
                                     onChange={(e) => updateWorkInfo(index, { title: e.target.value })}
                                 />
@@ -184,7 +180,7 @@ function Page1() {
                             <li className="first">작품내용<span className="red">*</span></li>
                             <li className="second">
                                 <textarea 
-                                required
+                                    required
                                     placeholder="작품내용을 입력해주세요"
                                     value={work.description}
                                     onChange={(e) => updateWorkInfo(index, { description: e.target.value })}
@@ -219,7 +215,7 @@ function Page1() {
                             <li className="second second-textarea">
                                 <textarea 
                                     className="movieTitle" 
-                                  placeholder={placeholderText3}
+                                    placeholder={placeholderText3}
                                     value={work.additionalInfo}
                                     onChange={(e) => updateWorkInfo(index, { additionalInfo: e.target.value })}
                                 />
@@ -239,8 +235,7 @@ function Page1() {
                                 />
                             </li>
                         </ul>
-                       <p className='Tend'>※ 썸네일이란, 영상을 클릭하기 전에 내용을 미리 보여주는 작은 대표 이미지입니다.
-                       </p>
+                        <p className='Tend'>※ 썸네일이란, 영상을 클릭하기 전에 내용을 미리 보여주는 작은 대표 이미지입니다.</p>
                     </div>
                 ))}
             </section>

@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './drop-file-input.css';
 import upload from "../../image/upload.png";
-import { useEffect } from 'react';
+
 const ImgDrop = (props) => {
     const wrapperRef = useRef(null);
     const [file, setFile] = useState(null);
@@ -29,12 +29,13 @@ const ImgDrop = (props) => {
             }
 
             setFile(newFile);
-            setFileUrl(URL.createObjectURL(newFile)); // 파일 URL 생성
+            const imageUrl = URL.createObjectURL(newFile); // 파일 URL 생성
+            setFileUrl(imageUrl); // 파일 URL 설정
 
             if (typeof props.onImageChange === 'function') {
                 props.onImageChange({
                     file: newFile,
-                    url: URL.createObjectURL(newFile) // URL도 함께 전달
+                    url: imageUrl // URL도 함께 전달
                 });
             }
         }
@@ -52,22 +53,22 @@ const ImgDrop = (props) => {
     const formatFileSize = (sizeInBytes) => {
         return (sizeInBytes / 1024).toFixed(2) + ' KB'; // 소수점 두 자리까지 표시
     };
+
     const updatePlaceholder = () => {
         if (window.innerWidth < 1024) {
-          setimgText("여기를 터치하여 파일을 첨부해주세요");
-         
+            setimgText("여기를 터치하여 파일을 첨부해주세요");
         } else {
-        setimgText("이미지 파일을 여기로 그래그 하세요");
-        
+            setimgText("이미지 파일을 여기로 드래그 하세요");
         }
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         updatePlaceholder();
         window.addEventListener("resize", updatePlaceholder);
-  
+
         return () => window.removeEventListener("resize", updatePlaceholder);
-      }, []);
+    }, []);
+
     return (
         <div ref={wrapperRef} className="drop-file-input" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDrop={onDrop}>
             {!file ? ( // 파일이 없을 경우 드롭 영역 표시
@@ -85,11 +86,18 @@ const ImgDrop = (props) => {
                 <div className="drop-file-preview">
                     <div className="drop-file-preview__item">
                         <div className="drop-file-preview__item__info">
+                        {fileUrl && (
+                        <div className="image-preview">
+                            <img src={fileUrl} alt="Preview" className="image-element" />
+                        </div>
+                    )}
                             <p>{file.name}</p>
                             <p>{formatFileSize(file.size)}</p>
                         </div>
                         <span className="drop-file-preview__item__del" onClick={fileRemove}>x</span>
                     </div>
+                  
+                  
                 </div>
             )}
         </div>

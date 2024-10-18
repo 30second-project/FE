@@ -17,7 +17,7 @@ border: 1px solid #ddd;
     height: 200px;
     padding: 15px;
     box-sizing: border-box;
-    padding-left: 0;
+
 }
 .box2-2 .second{
     padding: 10px;
@@ -27,10 +27,9 @@ overflow-x: hidden;
 border: 1px solid #ddd;
 }
 .first2{
-    text-align: center!important;
-    font-size: 15px;
-    line-height: 30px;
-    margin-right: 15px;
+    text-align: left;
+    line-height: 20px;
+  
 }
 .notice{
     padding: 10px;
@@ -54,10 +53,7 @@ input[type="checkbox"] {
     border: 2px solid black; 
     border-radius: 4px;
     cursor: pointer;
-    position: absolute;
-    top:50%;
-    left:27%;
-    transform: translate(-50%,-50%);
+  margin-right: 5%;
 }
 .page2Line{
     width: 100%;
@@ -166,12 +162,11 @@ cursor: pointer;
 }
 
 
-.page2Btn li:nth-child(2) img{
-    position:absolute;
-    top:50%;
-    left: 22%;
-    transform: translate(-50%,-50%);
+.page2Btn li:nth-child(2){
+    text-align: center;
+   
 }
+
 .what{
     padding-right:30px;
      box-sizing: border-box;
@@ -193,7 +188,10 @@ a{
     border-radius: 10px;
     cursor: pointer;
 }
-
+.middle{
+    align-content: center!important;
+    margin-left: 30%;  
+}
 @media (min-width: 768px) and (max-width: 1024px) {
    
 .page2Btn{
@@ -211,32 +209,37 @@ a{
 .page2Btn li:nth-child(2){
     margin-left: 5px;
 }
-input[type="checkbox"] {
-    position: absolute;
-    top:50%;
-    left:28%;
-    transform: translate(-50%,-50%);
-}
+
 }
 @media only screen and (max-width: 767px) {
+    .check-text{
+        font-size: 10px;
+    }
 .first{
-    font-size: 13px;
+    font-size: 10px;
+    margin-left: -10px;
+    margin-right: 10px;
 }
 
 .box li:nth-child(1) {
     padding-left: 5px;
 }
         .first2{
-            text-align: center!important;
-            font-size: 12px;
-            line-height: 18px;
-            margin-right: 15px;
-           padding-left: 10px;
+            text-align: left;
+            font-size: 10px;
+            line-height: 15px;
+         margin-left: -10px;
+         margin-right: 10px;
+
         }
         .notice{
             padding: 2px;
         line-height: 15px;
         font-size: 10px;
+        }
+        .box2-1{
+            padding-left: 15px;
+            text-align: left;
         }
         .box2-2{
             padding-left: 15px;
@@ -261,6 +264,7 @@ input[type="checkbox"] {
         }
         .box li:nth-child(1) {
             padding-left: 15px;
+            flex:0.3;
         }
         .font{
             font-size: 12px;
@@ -370,12 +374,7 @@ input[type="checkbox"] {
         }
         
         
-        .page2Btn li:nth-child(2) img{
-            position:absolute;
-            top:50%;
-            left: 22%;
-            transform: translate(-50%,-50%);
-        }
+      
         .what{
           margin-right: 5px;
          

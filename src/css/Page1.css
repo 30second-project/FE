@@ -27,6 +27,7 @@ margin-top: 20px;
 .circleText li{
     font-family:title;
     text-align: center;
+    font-size: 18px;
 }
 .circleText li:nth-child(1){
     color: #ab3b2c;
@@ -188,6 +189,7 @@ textarea{
     align-items: flex-start; 
     width: 99%;
     box-sizing: border-box; 
+    overflow: hidden;
 }
 
 @font-face {
@@ -480,6 +482,10 @@ button{
             margin: 0 auto;
             justify-content: space-between;
             margin-top: 10px;
+           
+        }
+        .circleText li{
+            font-size: 13px;
         }
        
         /* circle zone end*/

@@ -25,7 +25,7 @@
 
 @font-face {
     font-family: p3-2;
-    src: url(../font/Paperlogy-3Light.ttf);
+    src: url(../font/Paperlogy-4Regular.ttf);
 }
 
 .p3-1 {
@@ -37,6 +37,7 @@
 .p3-2 {
     font-family: p3-2;
     font-size: 15px;
+    line-height: 25px;
 }
 
 .home {
