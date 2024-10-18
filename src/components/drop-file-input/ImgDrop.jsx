@@ -9,6 +9,13 @@ const ImgDrop = (props) => {
     const [fileUrl, setFileUrl] = useState(null); // 파일 URL을 저장할 상태 추가
     const [imgText, setimgText] = useState("");
 
+    useEffect(() => {
+        // existingImage에서 URL이 있을 경우 파일 URL을 설정
+        if (props.existingImage && props.existingImage.url) {
+            setFileUrl(props.existingImage.url);
+        }
+    }, [props.existingImage]);
+
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
     const onDrop = () => wrapperRef.current.classList.remove('dragover');
@@ -86,18 +93,16 @@ const ImgDrop = (props) => {
                 <div className="drop-file-preview">
                     <div className="drop-file-preview__item">
                         <div className="drop-file-preview__item__info">
-                        {fileUrl && (
-                        <div className="image-preview">
-                            <img src={fileUrl} alt="Preview" className="image-element" />
-                        </div>
-                    )}
+                            {fileUrl && (
+                                <div className="image-preview">
+                                    <img src={fileUrl} alt="Preview" className="image-element" />
+                                </div>
+                            )}
                             <p>{file.name}</p>
                             <p>{formatFileSize(file.size)}</p>
                         </div>
                         <span className="drop-file-preview__item__del" onClick={fileRemove}>x</span>
                     </div>
-                  
-                  
                 </div>
             )}
         </div>
@@ -107,11 +112,15 @@ const ImgDrop = (props) => {
 // PropTypes 설정
 ImgDrop.propTypes = {
     onImageChange: PropTypes.func.isRequired, // 이미지 변경 핸들러 추가
+    existingImage: PropTypes.shape({ // 기존 이미지 prop 타입 정의
+        url: PropTypes.string
+    })
 };
 
 // 기본 props 설정
 ImgDrop.defaultProps = {
     onImageChange: () => {}, // 기본적으로 빈 함수
+    existingImage: {} // 기본적으로 빈 객체
 };
 
 export default ImgDrop;

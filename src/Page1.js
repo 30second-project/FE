@@ -6,46 +6,31 @@ import DropFileInput from "./components/drop-file-input/DropFileInput";
 import ImgDrop from "./components/drop-file-input/ImgDrop";
 import plus from "./image/plus.png";
 import next from "./image/right.png";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function Page1() {
+
+function Page1({ works, setWorks }) {
     const Server_IP = process.env.REACT_APP_Server_IP;
     const [placeholderText, setPlaceholderText] = useState("");
     const [placeholderText2, setPlaceholderText2] = useState("");
     const [placeholderText3, setPlaceholderText3] = useState("");
-    const [works, setWorks] = useState([
-        {
-            title: '',
-            description: '',
-            director: '',
-            actors: '',
-            additionalInfo: '',
-            videoFile: null,
-            videoName: '',
-            videoSize: '',
-            videoDuration: '',
-            videoUrl: '',
-            thumbnail: null,
-            imgName: '',
-            imgSize: '',
-            imgType: '',
-            thumbnailUrl: '',
-        }
-    ]);
 
-    const navigate = useNavigate();  
+    const navigate = useNavigate();
 
+    // 상태 업데이트 함수
     const updateWorkInfo = (index, data) => {
         const updatedWorks = [...works];
         updatedWorks[index] = { ...updatedWorks[index], ...data };
         setWorks(updatedWorks);
     };
 
+    // 작업 삭제 함수
     const handleRemoveWork = (index) => {
         const newWorks = works.filter((_, i) => i !== index);
         setWorks(newWorks);
     };
 
+    // 파일 변경 처리
     const handleFileChange = (index, fileData) => {
         const newWorks = [...works];
         if (fileData) {
@@ -63,28 +48,46 @@ function Page1() {
         setWorks(newWorks);
     };
 
+    // 이미지 파일 데이터 업데이트
     const updateImageFileData = (index, fileData) => {
         const newWorks = [...works];
         if (fileData && fileData.file instanceof File) {
-            const thumbnailUrl = URL.createObjectURL(fileData.file); 
+            const thumbnailUrl = URL.createObjectURL(fileData.file);
             newWorks[index].thumbnail = fileData.file;
             newWorks[index].imgName = fileData.name;
             newWorks[index].imgSize = (fileData.size / 1024).toFixed(2) + ' KB';
             newWorks[index].imgType = fileData.type;
-            newWorks[index].thumbnailUrl = thumbnailUrl; 
+            newWorks[index].thumbnailUrl = thumbnailUrl;
         } else {
             newWorks[index].thumbnail = null;
             newWorks[index].imgName = '';
             newWorks[index].imgSize = '';
             newWorks[index].imgType = '';
-            newWorks[index].thumbnailUrl = ''; 
+            newWorks[index].thumbnailUrl = '';
         }
         setWorks(newWorks);
     };
 
+    // 페이지 추가 함수
     const handleAddPlusPage = () => {
-        if (works.length < 3) { 
-            setWorks([...works, { thumbnail: null, thumbnailUrl: '' }]);
+        if (works.length < 3) {
+            setWorks([...works, {
+                title: '',
+                description: '',
+                director: '',
+                actors: '',
+                additionalInfo: '',
+                videoFile: null,
+                videoName: '',
+                videoSize: '',
+                videoDuration: '',
+                videoUrl: '',
+                thumbnail: null,
+                imgName: '',
+                imgSize: '',
+                imgType: '',
+                thumbnailUrl: '',
+            }]);
         }
     };
 
@@ -92,15 +95,17 @@ function Page1() {
         window.scrollTo(0, 0);
     }, []);
 
+    // 필수 필드 검증 함수
     const validateRequiredFields = () => {
         for (let work of works) {
             if (!work.title || !work.description || !work.director || !work.videoFile) {
-                return false;  
+                return false;
             }
         }
-        return true; 
+        return true;
     };
 
+    // 제출 처리 함수
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateRequiredFields()) {
@@ -110,6 +115,7 @@ function Page1() {
         }
     };
 
+    // 플레이스홀더 업데이트 함수
     const updatePlaceholder = () => {
         if (window.innerWidth < 1024) {
             setPlaceholderText("감독이름을 입력해주세요\n (2명 이상인 경우, 쉼표로 구분해주세요)");
@@ -125,10 +131,10 @@ function Page1() {
     useEffect(() => {
         updatePlaceholder();
         window.addEventListener("resize", updatePlaceholder);
-    
+
         return () => window.removeEventListener("resize", updatePlaceholder);
     }, []);
-    
+
     return (
         <div>
             <Header />
@@ -211,8 +217,8 @@ function Page1() {
                             </li>
                         </ul>
                         <ul className="box box1">
-                            <li className="first"><span className='Tbr'>추가입력</span>사항</li>
-                            <li className="second second-textarea">
+                            <li className="first">추가정보</li>
+                            <li className="second movieInput second-textarea">
                                 <textarea 
                                     className="movieTitle" 
                                     placeholder={placeholderText3}
@@ -221,18 +227,28 @@ function Page1() {
                                 />
                             </li>
                         </ul>
-                        <ul className="box drop">
-                            <li className="first"><span className='Tbr'>작품 영상</span> 첨부<span className="red">*</span></li>
+                        <ul className="box drop end">
+                            <li className="first"><span className='Tbr'>작품 동영상</span> 첨부<span className="red">*</span></li>
                             <li className="drop">
-                                <DropFileInput onFileChange={(fileData) => handleFileChange(index, fileData)} />
+                               <DropFileInput 
+    onFileChange={(fileData) => handleFileChange(index, fileData)} 
+    existingFile={{
+        videoFile: work.videoFile,
+        videoDuration: work.videoDuration,
+        videoUrl: work.videoUrl,
+    }}
+/>
                             </li>
                         </ul>
                         <ul className="box drop end">
                             <li className="first"><span className='Tbr'>작품 썸네일</span> 첨부</li>
                             <li className="drop">
-                                <ImgDrop 
-                                    onImageChange={(fileData) => updateImageFileData(index, fileData)}
-                                />
+                            <ImgDrop 
+            onImageChange={(fileData) => updateImageFileData(index, fileData)}
+            existingImage={{
+                url: work.thumbnailUrl // 썸네일 URL 전달
+            }}
+        />
                             </li>
                         </ul>
                         <p className='Tend'>※ 썸네일이란, 영상을 클릭하기 전에 내용을 미리 보여주는 작은 대표 이미지입니다.</p>

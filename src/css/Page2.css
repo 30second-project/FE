@@ -171,12 +171,15 @@ cursor: pointer;
     padding-right:30px;
      box-sizing: border-box;
      background-color: #7d7d7d;
+     font-size: 18px;
  
  }
 .what2{
    padding-left: 30px;
    box-sizing: border-box;
     background-color: #ab3b2c;
+    font-size: 18px;
+
 }
 a{
     text-decoration: none;
