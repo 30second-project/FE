@@ -11,7 +11,7 @@ const SubmissionSearch = ({ searchKeyword, setSearchKeyword, category, setCatego
             />
             <select onChange={(e) => setCategory(e.target.value)} value={category}>
                 <option value="name">이름</option>
-                <option value="userId">사용자 ID</option>
+                <option value="memberId">사용자 ID</option>
             </select>
             <button onClick={handleSearch}>검색</button>
         </div>

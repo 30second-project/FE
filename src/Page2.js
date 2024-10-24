@@ -21,9 +21,9 @@ function Page2() {
     }, []);
 
     const [memberInfo, setMemberInfo] = useState({
-        userName: "1",
-        memberId: "1",
-        contact: "123123123"
+        userName: "",
+        memberId: "",
+        contact: ""
       });
 
     const openModal = (videoUrl) => {

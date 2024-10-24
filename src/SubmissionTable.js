@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SubmissionSearch from './SubmissionSearch';
 import SubmissionDetails from './SubmissionDetails';
+import Modal from './Modal';
 import '../src/css/SubmissionTable.css'; // 경로 수정
 
 const SubmissionTable = () => {
@@ -12,7 +13,7 @@ const SubmissionTable = () => {
     const [selectedSubmission, setSelectedSubmission] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedVideoUrl, setSelectedVideoUrl] = useState(null); // 선택된 비디오 URL 상태 추가
-    
+
     const fetchSubmissions = async () => {
         try {
             const response = await axios.get(`${Server_IP}/upload/submissions`);
@@ -117,21 +118,28 @@ const SubmissionTable = () => {
                 {submissions.map((submission, index) => {
                     const videoLinks = submission.videos && Array.isArray(submission.videos) ? submission.videos : [];
 
+                    // 비디오가 3개 미만인 경우, 나머지 칸을 '없음'으로 채우기 위한 작업
+                    const emptySlots = 3 - videoLinks.length;
+                    const displayedVideos = [...videoLinks, ...Array(emptySlots).fill({ title: '없음', videoUrl: null })];
+
                     return (
                         <tr key={submission.id}>
                             <td>{index + 1}</td>
                             <td>{convertToKST(submission.submissionTime)}</td>
                             <td>{submission.name}</td>
-                            <td>{submission.userId}</td>
+                            <td>{submission.memberId}</td>
                             <td>{submission.contact || "연락처 없음"}</td>
-                            {videoLinks.map((video, videoIndex) => (
+                            {displayedVideos.map((video, videoIndex) => (
                                 <td key={videoIndex}>
-                                    <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">클릭</a>
-                                    <button onClick={() => openModal(video.videoUrl)}>보기</button>
+                                    {video.title !== '없음' ? (
+                                        <>
+                                            <span onClick={() => openModal(video.videoUrl)}>{video.title}</span>
+                                            <button onClick={() => openModal(video.videoUrl)}>보기</button>
+                                        </>
+                                    ) : (
+                                        '없음'
+                                    )}
                                 </td>
-                            ))}
-                            {[...Array(3 - videoLinks.length)].map((_, emptyIndex) => (
-                                <td key={`empty-${emptyIndex}`}>없음</td>
                             ))}
                             <td>{submission.agreement ? "확인" : "확인"}</td>
                         </tr>
@@ -155,12 +163,6 @@ const SubmissionTable = () => {
                     </div>
                 </div>
             )}
-
-            <SubmissionDetails
-                isOpen={isModalOpen}
-                onClose={closeModal}
-                submission={selectedSubmission}
-            />
         </div>
     );
 };
