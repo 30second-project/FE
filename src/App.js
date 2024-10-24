@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Page1 from './Page1';
 import Page2 from './Page2';
+import Page3 from './Page3';
+
+import SubmissionTable from './SubmissionTable'; 
 
 function App() {
     const [works, setWorks] = useState([
@@ -22,7 +25,6 @@ function App() {
             imgType: '',
             thumbnailUrl: '',
         },
-        // 초기 값으로 다른 작업 추가 가능
     ]);
 
     return (
@@ -30,6 +32,8 @@ function App() {
             <Routes>
                 <Route path="/" element={<Page1 works={works} setWorks={setWorks} />} />
                 <Route path="/page2" element={<Page2 works={works} />} />
+                <Route path="/page3" element={<Page3 works={works} />} />
+                <Route path="/AdminPage" element={<SubmissionTable />} />
             </Routes>
         </Router>
     );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SubmissionSearch from './SubmissionSearch';
 import SubmissionDetails from './SubmissionDetails';
+import '../src/css/SubmissionTable.css'; // 경로 수정
 
 const SubmissionTable = () => {
     const Server_IP = process.env.REACT_APP_Server_IP;
@@ -10,12 +11,12 @@ const SubmissionTable = () => {
     const [category, setCategory] = useState("name");
     const [selectedSubmission, setSelectedSubmission] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [selectedVideoUrl, setSelectedVideoUrl] = useState(null); // 선택된 비디오 URL 상태 추가
+    
     const fetchSubmissions = async () => {
         try {
             const response = await axios.get(`${Server_IP}/upload/submissions`);
-            console.log(response.data);
-            // API 응답이 배열인지 확인
+            console.log("Fetched submissions:", response.data); // 데이터 구조 확인을 위한 로그
             if (Array.isArray(response.data)) {
                 setSubmissions(response.data);
             } else {
@@ -27,9 +28,16 @@ const SubmissionTable = () => {
         }
     };
 
+    const convertToKST = (submissionTime) => {
+        const utcSubmissionTime = submissionTime.endsWith('Z') ? submissionTime : `${submissionTime}Z`;
+        const curr = new Date(utcSubmissionTime);
+        return curr.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+    };
+
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`${Server_IP}/api/submissions/search?keyword=${searchKeyword}&category=${category}`);
+            const response = await axios.get(`${Server_IP}/upload/submissions/search?keyword=${searchKeyword}&category=${category}`);
+            console.log("Search results:", response.data); // 검색 결과 확인
             if (Array.isArray(response.data)) {
                 setSubmissions(response.data);
             } else {
@@ -43,10 +51,9 @@ const SubmissionTable = () => {
 
     const handleDownloadExcelWithSearch = async () => {
         try {
-            const response = await axios.get(`${Server_IP}/api/submissions/download/search?keyword=${searchKeyword}&category=${category}`, {
+            const response = await axios.get(`${Server_IP}/upload/submissions/download`, {
                 responseType: 'blob',
             });
-
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
@@ -59,14 +66,18 @@ const SubmissionTable = () => {
         }
     };
 
-    const openModal = (submission) => {
-        setSelectedSubmission(submission);
+    const openModal = (videoUrl) => {
+        if (!videoUrl) {
+            console.error("비디오 URL이 존재하지 않습니다.");
+            return;
+        }
+        setSelectedVideoUrl(videoUrl);
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
-        setSelectedSubmission(null);
-        setIsModalOpen(false);
+        setSelectedVideoUrl(null); // 선택된 비디오 URL 초기화
+        setIsModalOpen(false); // 모달 닫기
     };
 
     useEffect(() => {
@@ -74,50 +85,77 @@ const SubmissionTable = () => {
     }, []);
 
     return (
-        <div>
-            <h1>제출 리스트</h1>
-            <SubmissionSearch
-                searchKeyword={searchKeyword}
-                setSearchKeyword={setSearchKeyword}
-                category={category}
-                setCategory={setCategory}
-                handleSearch={handleSearch}
-            />
-            <button onClick={handleDownloadExcelWithSearch} disabled={submissions.length === 0}>엑셀 다운로드</button>
-            <table border="1">
+        <div className="submission-table-container">
+            <div className="search-container">
+                <SubmissionSearch
+                    searchKeyword={searchKeyword}
+                    setSearchKeyword={setSearchKeyword}
+                    category={category}
+                    setCategory={setCategory}
+                    handleSearch={handleSearch}
+                />
+                <button className="download-btn" onClick={handleDownloadExcelWithSearch} disabled={submissions.length === 0}>
+                    엑셀 다운로드
+                </button>
+            </div>
+
+            <table className="submission-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>이름</th>
-                        <th>사용자 ID</th>
+                        <th>번호</th>
+                        <th>제출타임라인</th>
+                        <th>성함</th>
+                        <th>아이디</th>
                         <th>연락처</th>
-                        <th>제출 시간</th>
-                        <th>개인정보 동의</th>
-                        <th>작품 URL</th>
-                        <th>작업</th>
+                        <th>출품작1</th>
+                        <th>출품작2</th>
+                        <th>출품작3</th>
+                        <th>동의</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {submissions.map(submission => (
+                {submissions.map((submission, index) => {
+                    const videoLinks = submission.videos && Array.isArray(submission.videos) ? submission.videos : [];
+
+                    return (
                         <tr key={submission.id}>
-                            <td>{submission.id}</td>
+                            <td>{index + 1}</td>
+                            <td>{convertToKST(submission.submissionTime)}</td>
                             <td>{submission.name}</td>
                             <td>{submission.userId}</td>
-                            <td>{submission.contact}</td>
-                            <td>{submission.submissionTime}</td>
-                            <td>{submission.agreement ? "동의함" : "동의하지 않음"}</td>
-                            <td>
-                                {Array.isArray(submission.videos) && submission.videos.length > 0
-                                    ? submission.videos.map(video => <div key={video.id}>{video.videoUrl}</div>)
-                                    : "비디오 없음"}
-                            </td>
-                            <td>
-                                <button onClick={() => openModal(submission)}>세부 정보 보기</button>
-                            </td>
+                            <td>{submission.contact || "연락처 없음"}</td>
+                            {videoLinks.map((video, videoIndex) => (
+                                <td key={videoIndex}>
+                                    <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">클릭</a>
+                                    <button onClick={() => openModal(video.videoUrl)}>보기</button>
+                                </td>
+                            ))}
+                            {[...Array(3 - videoLinks.length)].map((_, emptyIndex) => (
+                                <td key={`empty-${emptyIndex}`}>없음</td>
+                            ))}
+                            <td>{submission.agreement ? "확인" : "확인"}</td>
                         </tr>
-                    ))}
+                    );
+                })}
                 </tbody>
             </table>
+
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button className="close-button" onClick={closeModal}>
+                            <i className="xi-close-circle-o"></i>
+                        </button>
+                        {selectedVideoUrl && (
+                            <video className="modalVideo" controls>
+                                <source src={selectedVideoUrl} type="video/mp4" />
+                                브라우저가 비디오 태그를 지원하지 않습니다.
+                            </video>
+                        )}
+                    </div>
+                </div>
+            )}
+
             <SubmissionDetails
                 isOpen={isModalOpen}
                 onClose={closeModal}

@@ -34,10 +34,10 @@ POBA 30초 모바일영화제 사이트에 업로드 되기까지 최대 3일 �
 기타 문의사항은 02-525-6262로 전화 부탁드립니다.</div>
                 </p>
             </div>
-            <div className="home"><a href="https://poba30.com">
-            “POBA 30초 모바일영화제” 사이트 바로가기&nbsp;&nbsp;<img src={right}></img></a>
+            <a href="https://poba30.com"> <div className="home">
+            상영사이트 바로가기 &nbsp;&nbsp;<img src={right}></img>
             </div>
-          
+            </a>
         </div>
     );
 }

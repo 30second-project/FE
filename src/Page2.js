@@ -20,6 +20,12 @@ function Page2() {
         window.scrollTo(0, 0);
     }, []);
 
+    const [memberInfo, setMemberInfo] = useState({
+        userName: "1",
+        memberId: "1",
+        contact: "123123123"
+      });
+
     const openModal = (videoUrl) => {
         setSelectedVideoUrl(videoUrl);
         setIsModalOpen(true);
@@ -34,46 +40,72 @@ function Page2() {
         setIsChecked(!isChecked); 
     };
     const navigate = useNavigate(); 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
     
-        if (!isChecked) {
-            alert('모든 내용을 확인하고 동의해야 출품할 수 있습니다.');
-                window.scrollTo(0, 400);
-          
-            return;
-        }
+        // 필수 필드 검증 함수
+        const validateRequiredFields = () => {
+            for (let work of works) {
+                if (!work.title || !work.description || !work.director || !work.videoFile) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+ // handleSubmit 함수 내부 수정
+const handleSubmit = (e) => {
+    e.preventDefault();
     
-      
-        navigate('/page3');
-    
+    if (!isChecked) {
+        alert('모든 내용을 확인하고 동의해야 출품할 수 있습니다.');
+        window.scrollTo(0, 400);
+        return; // 체크박스가 체크되지 않으면 함수 종료
+    }
+
+    if (validateRequiredFields()) {
         const formData = new FormData();
-    
-        works.forEach((work, index) => {
-            if (work.thumbnail) formData.append(`thumbnail_${index}`, work.thumbnail);
-            if (work.videoFile) formData.append(`video_${index}`, work.videoFile);
-    
-            formData.append(`title_${index}`, work.title);
-            formData.append(`description_${index}`, work.description);
-            formData.append(`director_${index}`, work.director);
-            formData.append(`actors_${index}`, work.actors);
-            formData.append(`additionalInfo_${index}`, work.additionalInfo);
+        formData.append("memberId", memberInfo.memberId);
+        formData.append("userName", memberInfo.userName);
+        formData.append("contact", memberInfo.contact); // 연락처 추가
+
+        works.forEach((work) => {
+            formData.append('files', work.videoFile); // 비디오 파일 추가
         });
-    
-        try {
-            const response = await axios.post(`${Server_IP}/upload`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log('Response:', response.data);
-           
-        } catch (error) {
-            console.error('Error:', error);
-            alert('서버 요청 중 문제가 발생했습니다.');
-        }
-    };
-    
+
+        // videoDTOList 객체를 JSON 문자열로 추가
+        const videoDTOList = works.map(work => ({
+            title: work.title,
+            description: work.description,
+            director: work.director,
+            actors: work.actors,
+            additionalInfo: work.additionalInfo,
+            videoUrl: work.videoUrl,
+            thumbnailUrl: work.thumbnailUrl,
+        }));
+
+        formData.append('videoDTOList', JSON.stringify(videoDTOList)); // videoDTOList 추가
+
+        // 클라이언트의 현재 시간을 서버로 전달
+        const currentTime = new Date().toISOString(); // 타임존 정보가 포함된 시간
+        formData.append('submissionTime', currentTime); // 제출 시간 추가
+
+        axios.post(`${Server_IP}/upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then(response => {
+            console.log("제출 성공:", response.data);
+            navigate('/page3', { state: { works, memberInfo } });
+        })
+        .catch(error => {
+            console.error("제출 실패:", error);
+            alert('제출에 실패했습니다.');
+        });
+    } else {
+        alert('모든 필수 항목을 입력해주세요.');
+    }
+};
+        
  
     return (
         <div>
