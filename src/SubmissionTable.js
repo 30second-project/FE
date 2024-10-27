@@ -16,7 +16,7 @@ const SubmissionTable = () => {
 
     const fetchSubmissions = async () => {
         try {
-            const response = await axios.get(`${Server_IP}/upload/submissions`);
+            const response = await axios.get(`${Server_IP}/api/submissions`);
             console.log("Fetched submissions:", response.data); // 데이터 구조 확인을 위한 로그
             if (Array.isArray(response.data)) {
                 setSubmissions(response.data);
@@ -37,7 +37,7 @@ const SubmissionTable = () => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`${Server_IP}/upload/submissions/search?keyword=${searchKeyword}&category=${category}`);
+            const response = await axios.get(`${Server_IP}/api/submissions/search?keyword=${searchKeyword}&category=${category}`);
             console.log("Search results:", response.data); // 검색 결과 확인
             if (Array.isArray(response.data)) {
                 setSubmissions(response.data);
@@ -52,7 +52,7 @@ const SubmissionTable = () => {
 
     const handleDownloadExcelWithSearch = async () => {
         try {
-            const response = await axios.get(`${Server_IP}/upload/submissions/download`, {
+            const response = await axios.get(`${Server_IP}/api/submissions/download`, {
                 responseType: 'blob',
             });
             const url = window.URL.createObjectURL(new Blob([response.data]));

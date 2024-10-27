@@ -21,9 +21,9 @@ function Page2() {
     }, []);
 
     const [memberInfo, setMemberInfo] = useState({
-        userName: "",
-        memberId: "",
-        contact: ""
+        userName: "namess",
+        memberId: "mem1",
+        contact: "123123123"
       });
 
     const openModal = (videoUrl) => {
@@ -88,7 +88,7 @@ const handleSubmit = (e) => {
         const currentTime = new Date().toISOString(); // 타임존 정보가 포함된 시간
         formData.append('submissionTime', currentTime); // 제출 시간 추가
 
-        axios.post(`${Server_IP}/upload`, formData, {
+        axios.post(`${Server_IP}/api/upload`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

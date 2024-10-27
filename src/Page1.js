@@ -19,33 +19,34 @@ function Page1({ works, setWorks }) {
     const navigate = useNavigate();
 
     const [memberInfo, setMemberInfo] = useState({
-        userName: "",
-        memberId: "",
-        contact: ""
+        userName: "namess",
+        memberId: "mem1",
+        contact: "123123123"
       });
       const [otpToken, setOtpToken] = useState(""); // OTP 토큰 값
     
-      // OTP 토큰이 있을 때 자동으로 백엔드와 통신해 사용자 정보 받아오기
-      useEffect(() => {
-        if (otpToken) {
-          axios
-            .get("/integrateUser", {
-              params: { otpToken: otpToken }
-            })
-            .then((response) => {
-              // 성공적으로 사용자 정보 받아오면 상태 업데이트
-              const { userName, memberId, contact } = response.data;
-              setMemberInfo({
-                userName: userName,
-                memberId: memberId,
-                contact: contact
-              });
-            })
-            .catch((error) => {
-              console.error("사용자 정보 연동 실패:", error);
-            });
-        }
-      }, [otpToken]);
+    //   // OTP 토큰이 있을 때 자동으로 백엔드와 통신해 사용자 정보 받아오기
+    
+    //   useEffect(() => {
+    //     if (otpToken) {
+    //       axios
+    //         .get("/integrateUser", {
+    //           params: { otpToken: otpToken }
+    //         })
+    //         .then((response) => {
+    //           // 성공적으로 사용자 정보 받아오면 상태 업데이트
+    //           const { userName, memberId, contact } = response.data;
+    //           setMemberInfo({
+    //             userName: userName,
+    //             memberId: memberId,
+    //             contact: contact
+    //           });
+    //         })
+    //         .catch((error) => {
+    //           console.error("사용자 정보 연동 실패:", error);
+    //         });
+    //     }
+    //   }, [otpToken]);
     
 
     // 상태 업데이트 함수
