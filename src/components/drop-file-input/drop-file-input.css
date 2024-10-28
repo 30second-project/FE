@@ -1,7 +1,6 @@
 .drop-file-input {
     position: relative;
     width: 100%;
-
     border: 2px solid #e1e1e1;
     border-radius: 20px;
     display: flex;
@@ -9,6 +8,10 @@
     justify-content: center;
     overflow: hidden;
 
+}
+.drop-file-input__label{
+margin: 20px 0;
+    box-sizing: border-box;
 }
 .drop-file-input__label img{
     width: 8%;
@@ -84,6 +87,9 @@ margin-top: 50px;
     transform: translateY(-50%);
     cursor: pointer;
   font-size: 30px;
+transition: ease-in 0.2s;}
+.drop-file-preview__item__del:hover{
+    color: #ab3b2c;
 }
 
 .drop-file-preview__item:hover .drop-file-preview__item__del {
@@ -105,7 +111,7 @@ margin-top: 50px;
         width:80%;
     }
     .video-preview video{
-        width:80%;
+        width:100%;
 
     }
 @media (min-width: 768px) and (max-width: 1024px) {

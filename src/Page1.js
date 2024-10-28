@@ -302,7 +302,7 @@ function Page1({ works, setWorks }) {
                             </li>
                         </ul>
                         <ul className="box drop end">
-                            <li className="first"><span className='Tbr'>작품 썸네일</span> 첨부</li>
+                            <li className="first"><span className='Tbr'>작품</span> <span className='Tbr'>썸네일</span><span className='Tbr'>첨부</span></li>
                             <li className="drop">
                             <ImgDrop 
             thumbnail={work.thumbnail} // 기존 이미지 파일 전달

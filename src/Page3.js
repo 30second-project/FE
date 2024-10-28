@@ -49,11 +49,15 @@ function Page3() {
                 <p className="p3-2">
                     <div className="Rfont">
                         <div className="result-box1">
-                            출품 적합 여부 확인 후 업로드가 진행됩니다.
-                            POBA 30초 모바일영화제 사이트에 업로드 되기까지 최대 3일 소요됩니다.<br />
+                            <span className='re_br'>출품 적합 여부 확인 후 업로드가 진행됩니다.&nbsp;&nbsp;</span>
+                            상영사이트에 업로드 되기까지 최대 3일 소요됩니다.<br />
                         </div>
-                        기타 문의사항은 02-525-6262로 전화 부탁드립니다.
+                        <span className='re_br'>기타 문의사항이 있다면,&nbsp;&nbsp;</span>
+                        다누림 문화복지서비스 운영사무국(02-525-6262)으로
+                        전화 부탁드립니다.
                     </div>
+
+
                 </p>
             </div>
             <a href="https://poba30.com">

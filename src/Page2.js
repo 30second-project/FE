@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from "./Header";
 import "./css/Page1.css";
 import "./css/Page2.css";
 import circle2 from '../src/image/page2.png';
 import right from "./image/right.png";
-import left from "./image/left.png";
-import { useNavigate } from 'react-router-dom'; 
+import left from "./image/left.png"; 
 
 function Page2() {
     const Server_IP = process.env.REACT_APP_Server_IP;
     const location = useLocation();
     const { works } = location.state || { works: [] };
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
     const [isChecked, setIsChecked] = useState(false); 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
     const [memberInfo, setMemberInfo] = useState({
         userName: "namess",
         memberId: "mem1",
         contact: "123123123"
-      });
+    });
+    
+    const navigate = useNavigate(); 
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const openModal = (videoUrl) => {
         setSelectedVideoUrl(videoUrl);
@@ -35,43 +37,46 @@ function Page2() {
         setIsModalOpen(false);
         setSelectedVideoUrl(null);
     };
-   
+
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked); 
     };
-    const navigate = useNavigate(); 
-    
-        // 필수 필드 검증 함수
-        const validateRequiredFields = () => {
-            for (let work of works) {
-                if (!work.title || !work.description || !work.director || !work.videoFile) {
-                    return false;
-                }
+
+    // 필수 필드 검증 함수
+    const validateRequiredFields = () => {
+        for (let work of works) {
+            if (!work.title || !work.description || !work.director || !work.videoFile) {
+                return false;
             }
-            return true;
-        };
+        }
+        return true;
+    };
 
- // handleSubmit 함수 내부 수정
-const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    if (!isChecked) {
-        alert('모든 내용을 확인하고 동의해야 출품할 수 있습니다.');
-        window.scrollTo(0, 400);
-        return; // 체크박스가 체크되지 않으면 함수 종료
-    }
+    // 제출 버튼 클릭 시 모달 오픈
+    const handleOpenConfirmModal = () => {
+        if (!isChecked) {
+            alert('모든 내용을 확인하고 동의해야 출품할 수 있습니다.');
+            window.scrollTo(0, 400);
+            return;
+        }
+        if (!validateRequiredFields()) {
+            alert('모든 필수 항목을 입력해주세요.');
+            return;
+        }
+        setConfirmModalOpen(true);
+    };
 
-    if (validateRequiredFields()) {
+    // 확인 모달의 확인 버튼 클릭 시 handleSubmit 호출
+    const handleSubmit = () => {
         const formData = new FormData();
         formData.append("memberId", memberInfo.memberId);
         formData.append("userName", memberInfo.userName);
-        formData.append("contact", memberInfo.contact); // 연락처 추가
+        formData.append("contact", memberInfo.contact);
 
         works.forEach((work) => {
-            formData.append('files', work.videoFile); // 비디오 파일 추가
+            formData.append('files', work.videoFile);
         });
 
-        // videoDTOList 객체를 JSON 문자열로 추가
         const videoDTOList = works.map(work => ({
             title: work.title,
             description: work.description,
@@ -82,11 +87,10 @@ const handleSubmit = (e) => {
             thumbnailUrl: work.thumbnailUrl,
         }));
 
-        formData.append('videoDTOList', JSON.stringify(videoDTOList)); // videoDTOList 추가
+        formData.append('videoDTOList', JSON.stringify(videoDTOList));
 
-        // 클라이언트의 현재 시간을 서버로 전달
-        const currentTime = new Date().toISOString(); // 타임존 정보가 포함된 시간
-        formData.append('submissionTime', currentTime); // 제출 시간 추가
+        const currentTime = new Date().toISOString();
+        formData.append('submissionTime', currentTime);
 
         axios.post(`${Server_IP}/api/upload`, formData, {
             headers: {
@@ -101,13 +105,9 @@ const handleSubmit = (e) => {
             console.error("제출 실패:", error);
             alert('제출에 실패했습니다.');
         });
-    } else {
-        alert('모든 필수 항목을 입력해주세요.');
-    }
-    
-};
-        
- 
+        setConfirmModalOpen(false);
+    };
+
     return (
         <div>
             <Header />
@@ -121,8 +121,8 @@ const handleSubmit = (e) => {
             </ul>
             <hr />
             <section>
-            <ul className="box box2-1">
-                    <li className="first">출품 시<br /> 유의사항</li>
+                <ul className="box box2-1">
+                    <li className="first first_option">출품 시<br /> 유의사항</li>
                     <li className="second">
                         <div className='notice'>
                             출품 시 유의사항<br />
@@ -141,11 +141,11 @@ const handleSubmit = (e) => {
                 </ul>
 
                 <ul className="box box2-2">
-                    <li className="first first2">저작권 이용<br /><span className="middle">·</span><br />일반 규정 및 개인<br/>정보 이용 동의</li>
+                    <li className="first first2">저작권 이용<br /><span className="middle">·</span><br />일반 규정 및<br/> 개인정보 이용<br/> 동의</li>
                     <li className="second">
                         <div className='notice'>
-                            저작권 이용 <br />
-                            1) 출품 유의 사항에 기재되어 있는 저작권 및 사용권 내용과 동의합니다. <br />
+                        저작권 이용 <br />
+                        1) 출품 유의 사항에 기재되어 있는 저작권 및 사용권 내용과 동의합니다. <br />
                             2) 출품작에 대한 저작권 및 소유권은 출품자에게 있으며, 수상 후에도 출품자에게 귀속됩니다. <br />
                             3) 주최사는 출품작을 영리 또는 비영리 목적으로 독점적 공표, 복제, 공연, 공중송신, 방송, 전송, 전시 및 배포(이하 ‘공표 등’) 할 수 있는 권리를 갖습니다. <br />
                             4) 출품작에 실질적인 개변이 없고, 내용, 형식, 제호의 동일성이 유지되는 범위 내에서 출품작의 포맷, 크기 등 형식을 수정 또는 변경할 수 있으며, 이를 주최사의 필요에 따라 활용할 수 있습니다. <br />
@@ -168,6 +168,7 @@ const handleSubmit = (e) => {
                 <div className='yes'>
                     <input type='checkbox'  checked={isChecked} onChange={handleCheckboxChange}></input><span className="check-text">모든 내용을 확인하였으며 이에 동의합니다.</span>
                 </div>
+
                 {works.map((work, index) => (
                     <div key={index} className='page2'>
                         <p className="info">출품정보 확인</p>
@@ -191,8 +192,6 @@ const handleSubmit = (e) => {
                             <li className="first">추가정보</li>
                             <li className="second">{work.additionalInfo}</li>
                         </ul>
-
-                    
                         <div className="two-columns">
                             <ul className="box drop video-box">
                                 <li className="first"><span className='Tbr'>작품 영상</span> 첨부</li>
@@ -261,12 +260,46 @@ const handleSubmit = (e) => {
                         </div>
                     </div>
                 )}
+                {isModalOpen && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <button className="close-button" onClick={closeModal}>
+                                <i className="xi-close-circle-o"></i>
+                            </button>
+                            {selectedVideoUrl && (
+                                <video className="modalVideo" controls>
+                                    <source src={selectedVideoUrl} type="video/mp4" />
+                                    브라우저가 비디오 태그를 지원하지 않습니다.
+                                </video>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {confirmModalOpen && (
+                    <div className="modal-overlay2">
+                        <div className="modal-content2">
+                            <h3 className='modal-text1'>!&nbsp;&nbsp;잠깐&nbsp;&nbsp;!</h3>
+                            <p className='modal-text2'>
+                            출품 정보를 모두 정확하게 기재하셨나요?<br></br>
+                            출품 후에는 내용 수정 및 출품 취소가<br/> 
+                            불가능합니다.
+                            </p>
+                            <p className='modal-text3'>
+                                출품하시겠습니까?
+                            </p>
+                            <div className='modal-submit'>
+                            <button onClick={handleSubmit} className='resultBtn1'>확인</button>
+                            <button onClick={() => setConfirmModalOpen(false)} className='resultBtn2'>취소</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </section>
             <ul className='page2Btn'>
-    <li className='what' onClick={() => navigate(-1)}><img src={left} alt="이전" />이전</li>
-    <li className='what2' onClick={handleSubmit}>출품하기<img src={right} alt="출품하기" /></li>
-</ul>
-            {/*업로드 진행 창이 필요할 수도 있겠다..*/}
+                <li className='what' onClick={() => navigate(-1)}><img src={left} alt="이전" />이전</li>
+                <li className='what2' onClick={handleOpenConfirmModal}>출품하기<img src={right} alt="출품하기" /></li>
+            </ul>
         </div>
     );
 }

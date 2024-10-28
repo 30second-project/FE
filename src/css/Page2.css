@@ -96,7 +96,7 @@ input[type="checkbox"] {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); 
+    background-color: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -110,6 +110,84 @@ input[type="checkbox"] {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-overlay2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    text-align: center;
+}
+
+.modal-content2 {
+    position: relative;
+    width:30%;
+    height: 60%;
+    padding: 20px;
+    border-radius: 8px;
+   background-color: #ededef;
+   padding: 50px 0;
+   box-sizing: border-box;
+}
+@font-face {
+    font-family:text1;
+    src: url(../font/Tenada.ttf);
+}
+.modal-text1{
+   color: #ab3b2c;
+   font-family:text1;
+   font-size: 50px;
+   margin-bottom: 30px;
+}
+@font-face {
+    font-family: text2;
+    src: url(../font/Paperlogy-4Regular.ttf);
+}
+.modal-text2{
+    font-family: text2;
+    line-height: 23px;
+}
+@font-face {
+    font-family: text3;
+    src: url(../font/Paperlogy-5Medium.ttf);
+}
+.modal-text3{
+    font-family: text3;
+    font-size: 20px;
+    margin:30px 0;
+}
+.modal-submit{
+    display: flex;
+    margin:0 auto;
+   justify-content: space-between;
+   width:80%;
+}
+.modal-submit button{
+   cursor: pointer;
+    width:48%;
+    height: 50px;
+    border-radius: 30px;
+   border:5px solid #ab3b2c;
+   
+   font-size: 18px;
+   transition: ease-in 0.2s;
+   font-family:text1;
+   line-height: 50px;
+}
+.resultBtn1{
+    background-color: #ab3b2c;
+    color: #ededef;
+}
+.resultBtn2{
+    background-color: #ededef;
+    color: #ab3b2c;
 }
 
 .close-button {
@@ -172,6 +250,7 @@ cursor: pointer;
      box-sizing: border-box;
      background-color: #7d7d7d;
      font-size: 18px;
+     margin-right: 5px;
  
  }
 .what2{
@@ -179,7 +258,7 @@ cursor: pointer;
    box-sizing: border-box;
     background-color: #ab3b2c;
     font-size: 18px;
-
+margin-left: 5px;
 }
 a{
     text-decoration: none;
@@ -212,7 +291,16 @@ a{
 .page2Btn li:nth-child(2){
     margin-left: 5px;
 }
-
+.modal-content2 {
+    position: relative;
+    width:60%;
+    height: 60%;
+    padding: 20px;
+    border-radius: 8px;
+   background-color: #ededef;
+   padding: 50px 0;
+   box-sizing: border-box;
+}
 }
 @media only screen and (max-width: 767px) {
     .check-text{
@@ -376,6 +464,45 @@ a{
         .what2{
           margin-left: 5px;
         }
+        .first_option{
+          padding-right: 10px;
+          box-sizing: border-box;
+          margin-left: -10px;
+          font-size: 12px;
+        }
+        .modal-content2 {
+            position: relative;
+            width:80%;
+            height: 60%;
+            padding: 20px;
+            border-radius: 8px;
+           background-color: #ededef;
+           padding: 50px 0;
+           box-sizing: border-box;
+        }
        
-       
+        .modal-text1{
+           color: #ab3b2c;
+           font-family:text1;
+           font-size: 50px;
+           margin-bottom: 30px;
+        }
+      
+        .modal-text2{
+            font-family: text2;
+            line-height: 23px;
+        }
+     
+        .modal-text3{
+            font-family: text3;
+            font-size: 20px;
+            margin:30px 0;
+        }
+        .modal-submit{
+            display: flex;
+            margin:0 auto;
+           justify-content: space-between;
+           width:80%;
+        }
+      
 }

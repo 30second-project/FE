@@ -124,13 +124,16 @@ a {
         font-size: 12px;
     }
 
-    .result-box1 {
-        width: 50%;
-        margin: 0 auto;
-    }
+  
 .Rfont{
-    font-size: 10px;
+    width: 90%;
+    margin: 0 auto;
+    font-size: 15px;
     line-height: 15px;
+    line-height: 20px;
+}
+.re_br{
+    display: block;
 }
     .result {
 
@@ -151,5 +154,8 @@ a {
         width: 15%;
         margin-top: 20px;
         margin-bottom: 50px;
+    }
+    .result-box1{
+        margin-bottom: 20px;
     }
 }
