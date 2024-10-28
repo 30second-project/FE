@@ -92,4 +92,9 @@ font-size: 9px;
 width:90%;
 margin: 0 auto;
     }
+    .header-title{
+        font-size: 35px;
+        margin-top: 80px;
+        margin-bottom: 20px;
+      }
 }

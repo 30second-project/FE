@@ -218,15 +218,9 @@ a{
     .check-text{
         font-size: 10px;
     }
-.first{
-    font-size: 10px;
-    margin-left: -10px;
-    margin-right: 10px;
-}
 
-.box li:nth-child(1) {
-    padding-left: 5px;
-}
+
+
         .first2{
             text-align: left;
             font-size: 10px;
@@ -265,10 +259,7 @@ a{
         .second{
             font-size: 13px;
         }
-        .box li:nth-child(1) {
-            padding-left: 15px;
-            flex:0.3;
-        }
+      
         .font{
             font-size: 12px;
         }

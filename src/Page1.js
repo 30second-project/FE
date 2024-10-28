@@ -168,6 +168,13 @@ function Page1({ works, setWorks }) {
         return () => window.removeEventListener("resize", updatePlaceholder);
     }, []);
 
+
+    const handleThumbnailChange = (file, index) => {
+        const updatedWorks = [...works];
+        updatedWorks[index].thumbnail = file;
+        setWorks(updatedWorks);
+    };
+
     return (
         <div>
             <Header />
@@ -282,7 +289,7 @@ function Page1({ works, setWorks }) {
                             </li>
                         </ul>
                         <ul className="box drop end">
-                            <li className="first"><span className='Tbr'>작품 동영상</span> 첨부<span className="red">*</span></li>
+                            <li className="first"><span className='Tbr'>작품 영상</span> 첨부<span className="red">*</span></li>
                             <li className="drop">
                                <DropFileInput 
     onFileChange={(fileData) => handleFileChange(index, fileData)} 
@@ -298,11 +305,12 @@ function Page1({ works, setWorks }) {
                             <li className="first"><span className='Tbr'>작품 썸네일</span> 첨부</li>
                             <li className="drop">
                             <ImgDrop 
-            onImageChange={(fileData) => updateImageFileData(index, fileData)}
-            existingImage={{
-                url: work.thumbnailUrl // 썸네일 URL 전달
-            }}
-        />
+            thumbnail={work.thumbnail} // 기존 이미지 파일 전달
+        
+    existingFile={{ file: work.thumbnail, url: work.thumbnailUrl }}
+    onImageChange={(fileData) => updateImageFileData(index, fileData)}
+/>
+        
                             </li>
                         </ul>
                         <p className='Tend'>※ 썸네일이란, 영상을 클릭하기 전에 내용을 미리 보여주는 작은 대표 이미지입니다.</p>

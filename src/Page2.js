@@ -104,6 +104,7 @@ const handleSubmit = (e) => {
     } else {
         alert('모든 필수 항목을 입력해주세요.');
     }
+    
 };
         
  
