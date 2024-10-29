@@ -26,7 +26,6 @@ function Page1({ works, setWorks }) {
 
     const [otpToken, setOtpToken] = useState(""); // OTP 토큰 값
     
-    // OTP 토큰이 있을 때 자동으로 백엔드와 통신해 사용자 정보 받아오기
     useEffect(() => {
         if (otpToken) {
             axios
@@ -39,23 +38,20 @@ function Page1({ works, setWorks }) {
         }
     }, [otpToken, Server_IP]);
 
-    // 상태 업데이트 함수
     const updateWorkInfo = (index, data) => {
         const updatedWorks = [...works];
         updatedWorks[index] = { ...updatedWorks[index], ...data };
         setWorks(updatedWorks);
     };
 
-    // 작업 삭제 함수
     const handleRemoveWork = (index) => {
         const newWorks = works.filter((_, i) => i !== index);
         setWorks(newWorks);
     };
 
-    // 파일 변경 처리
     const handleFileChange = (index, fileData) => {
         const newWorks = [...works];
-        if (fileData) {
+        if (fileData && fileData.videoFile instanceof File) {
             newWorks[index].videoFile = fileData.videoFile;
             newWorks[index].videoName = fileData.videoFile.name;
             newWorks[index].videoDuration = fileData.videoDuration;
@@ -70,7 +66,6 @@ function Page1({ works, setWorks }) {
         setWorks(newWorks);
     };
 
-    // 이미지 파일 데이터 업데이트
     const updateImageFileData = (index, fileData) => {
         const newWorks = [...works];
         if (fileData && fileData.file instanceof File) {
@@ -117,27 +112,24 @@ function Page1({ works, setWorks }) {
         window.scrollTo(0, 0);
     }, []);
 
-    // 필수 필드 검증 함수
     const validateRequiredFields = () => {
         for (let work of works) {
-            if (!work.title || !work.description || !work.director || !work.videoFile) {
+            if (!work.title.trim() || !work.description.trim() || !work.director.trim() || !work.videoFile) {
                 return false;
             }
         }
         return true;
     };
 
-    // 제출 처리 함수
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateRequiredFields()) {
-            navigate('/page2', { state: { works,memberInfo } });
+            navigate('/page2', { state: { works, memberInfo } });
         } else {
             alert('모든 필수 항목을 입력해주세요.');
         }
     };
 
-    // 플레이스홀더 업데이트 함수
     const updatePlaceholder = () => {
         if (window.innerWidth < 1024) {
             setPlaceholderText("감독이름을 입력해주세요\n (2명 이상인 경우, 쉼표로 구분해주세요)");
