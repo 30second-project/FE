@@ -280,7 +280,7 @@ function Page2() {
                                 <i className="xi-close-circle-o"></i>
                             </button>
                             {selectedVideoUrl && (
-                                <video className="modalVideo" controls>
+                                <video className="modalVideo" controls playsInline>
                                     <source src={selectedVideoUrl} type="video/mp4" />
                                     브라우저가 비디오 태그를 지원하지 않습니다.
                                 </video>
