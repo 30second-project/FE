@@ -211,16 +211,32 @@ function Page2() {
                                     <div className="showBorder">
                                         {work.videoFile ? (
                                             <>
-                                                <video
-                                                    onClick={() => openModal(URL.createObjectURL(work.videoFile))}
-                                                    className="videoPreview"
-                                                >
-                                                    <source
-                                                        src={URL.createObjectURL(work.videoFile)}
-                                                        type="video/mp4"
-                                                    />
-                                                    브라우저가 비디오 태그를 지원하지 않습니다.
-                                                </video>
+                                             <video
+    onClick={() => {
+        const videoUrl = URL.createObjectURL(work.videoFile);
+        openModal(videoUrl);
+
+        // 모달이 닫힐 때 URL 해제
+        const handleModalClose = () => {
+            URL.revokeObjectURL(videoUrl);
+            document.removeEventListener('modalClose', handleModalClose);
+        };
+
+        document.addEventListener('modalClose', handleModalClose);
+    }}
+    className="videoPreview"
+    muted
+    playsInline
+
+    preload="metadata" // 메타데이터를 미리 로드하여 첫 프레임 표시
+>
+    <source
+        src={URL.createObjectURL(work.videoFile)} // URL 생성
+        type="video/mp4"
+    />
+    브라우저가 비디오 태그를 지원하지 않습니다.
+</video>
+
                                                 <div>
                                                     <span className="font">{work.videoFile.name || '업로드되지 않음'}&nbsp; ({work.videoDuration || '0:00'})</span><br />
                                                 </div>
