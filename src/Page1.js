@@ -6,11 +6,11 @@ import DropFileInput from "./components/drop-file-input/DropFileInput";
 import ImgDrop from "./components/drop-file-input/ImgDrop";
 import plus from "./image/plus.png";
 import next from "./image/right.png";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 function Page1({ works, setWorks }) {
+    const location = useLocation();
     const Server_IP = process.env.REACT_APP_Server_IP;
     const [placeholderText, setPlaceholderText] = useState("");
     const [placeholderText2, setPlaceholderText2] = useState("");
@@ -19,35 +19,25 @@ function Page1({ works, setWorks }) {
     const navigate = useNavigate();
 
     const [memberInfo, setMemberInfo] = useState({
-        userName: "namess",
-        memberId: "mem1",
-        contact: "123123123"
-      });
-      const [otpToken, setOtpToken] = useState(""); // OTP 토큰 값
+        userName: location.state?.memberInfo?.userName || "",
+        memberId: location.state?.memberInfo?.memberId || "",
+        contact: location.state?.memberInfo?.contact || ""
+    });
+
+    const [otpToken, setOtpToken] = useState(""); // OTP 토큰 값
     
-    //   // OTP 토큰이 있을 때 자동으로 백엔드와 통신해 사용자 정보 받아오기
-    
-    //   useEffect(() => {
-    //     if (otpToken) {
-    //       axios
-    //         .get("/integrateUser", {
-    //           params: { otpToken: otpToken }
-    //         })
-    //         .then((response) => {
-    //           // 성공적으로 사용자 정보 받아오면 상태 업데이트
-    //           const { userName, memberId, contact } = response.data;
-    //           setMemberInfo({
-    //             userName: userName,
-    //             memberId: memberId,
-    //             contact: contact
-    //           });
-    //         })
-    //         .catch((error) => {
-    //           console.error("사용자 정보 연동 실패:", error);
-    //         });
-    //     }
-    //   }, [otpToken]);
-    
+    // OTP 토큰이 있을 때 자동으로 백엔드와 통신해 사용자 정보 받아오기
+    useEffect(() => {
+        if (otpToken) {
+            axios
+                .get(`${Server_IP}/api/integrateUser`, { params: { otpToken: otpToken } })
+                .then((response) => {
+                    const { userName, memberId, contact } = response.data;
+                    setMemberInfo({ userName, memberId, contact });
+                })
+                .catch((error) => console.error("사용자 정보 연동 실패:", error));
+        }
+    }, [otpToken, Server_IP]);
 
     // 상태 업데이트 함수
     const updateWorkInfo = (index, data) => {
@@ -136,17 +126,16 @@ function Page1({ works, setWorks }) {
         }
         return true;
     };
-   // 제출 처리 함수
-   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateRequiredFields()) {
-        navigate('/page2', { state: { works } });
-    } else {
-        alert('모든 필수 항목을 입력해주세요.');
-    }
-};
 
-
+    // 제출 처리 함수
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validateRequiredFields()) {
+            navigate('/page2', { state: { works,memberInfo } });
+        } else {
+            alert('모든 필수 항목을 입력해주세요.');
+        }
+    };
 
     // 플레이스홀더 업데이트 함수
     const updatePlaceholder = () => {
@@ -168,13 +157,6 @@ function Page1({ works, setWorks }) {
         return () => window.removeEventListener("resize", updatePlaceholder);
     }, []);
 
-
-    const handleThumbnailChange = (file, index) => {
-        const updatedWorks = [...works];
-        updatedWorks[index].thumbnail = file;
-        setWorks(updatedWorks);
-    };
-
     return (
         <div>
             <Header />
@@ -190,38 +172,38 @@ function Page1({ works, setWorks }) {
             <section>
             <p className="info">1.출품자 정보</p>
             <ul className="box box1">
-                <li className="first">성함<span className="red">*</span></li>
-                <li className="second">
-                <input 
-                    type="text" 
-                    value={memberInfo.userName || "POBA누리 연동 자동 입력"} 
-                    placeholder="POBA누리 연동 자동 입력" 
-                    readOnly 
-                />
-                </li>
-            </ul>
-            <ul className="box box2">
-                <li className="first">아이디<span className="red">*</span></li>
-                <li className="second">
-                <input 
-                    type="text" 
-                    value={memberInfo.memberId || "POBA누리 연동 자동 입력"} 
-                    placeholder="POBA누리 연동 자동 입력" 
-                    readOnly 
-                />
-                </li>
-            </ul>
-            <ul className="box box3">
-                <li className="first">연락처<span className="red">*</span></li>
-                <li className="second">
-                <input 
-                    type="text" 
-                    value={memberInfo.contact || "POBA누리 연동 자동 입력"} 
-                    placeholder="POBA누리 연동 자동 입력" 
-                    readOnly 
-                />
-                </li>
-            </ul>
+                    <li className="first">성함<span className="red">*</span></li>
+                    <li className="second">
+                        <input 
+                            type="text" 
+                            value={memberInfo.userName}  // 초기값을 빈 문자열로 설정
+                            placeholder="POBA누리 연동 자동 입력" 
+                            onChange={(e) => setMemberInfo({ ...memberInfo, userName: e.target.value })} // onChange 핸들러 추가
+                        />
+                    </li>
+                </ul>
+                <ul className="box box2">
+                    <li className="first">아이디<span className="red">*</span></li>
+                    <li className="second">
+                        <input 
+                            type="text" 
+                            value={memberInfo.memberId}  // 초기값을 빈 문자열로 설정
+                            placeholder="POBA누리 연동 자동 입력" 
+                            onChange={(e) => setMemberInfo({ ...memberInfo, memberId: e.target.value })} // onChange 핸들러 추가
+                        />
+                    </li>
+                </ul>
+                <ul className="box box3">
+                    <li className="first">연락처<span className="red">*</span></li>
+                    <li className="second">
+                        <input 
+                            type="text" 
+                            value={memberInfo.contact}  // 초기값을 빈 문자열로 설정
+                            placeholder="POBA누리 연동 자동 입력" 
+                            onChange={(e) => setMemberInfo({ ...memberInfo, contact: e.target.value })} // onChange 핸들러 추가
+                        />
+                    </li>
+                </ul>
                 <p className="info">2.작품정보 <span className="three">(최대 3개까지 출품가능합니다)</span></p>
                 {works.map((work, index) => (
                     <div key={index}>

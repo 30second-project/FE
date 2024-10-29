@@ -16,11 +16,7 @@ function Page2() {
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
     const [isChecked, setIsChecked] = useState(false); 
-    const [memberInfo, setMemberInfo] = useState({
-        userName: "namess",
-        memberId: "mem1",
-        contact: "123123123"
-    });
+    const { memberInfo } = location.state || {}; // 회원 정보 가져오기
     
     const navigate = useNavigate(); 
     
@@ -67,47 +63,63 @@ function Page2() {
     };
 
     // 확인 모달의 확인 버튼 클릭 시 handleSubmit 호출
-    const handleSubmit = () => {
-        const formData = new FormData();
-        formData.append("memberId", memberInfo.memberId);
-        formData.append("userName", memberInfo.userName);
-        formData.append("contact", memberInfo.contact);
-
-        works.forEach((work) => {
-            formData.append('files', work.videoFile);
-        });
-
-        const videoDTOList = works.map(work => ({
-            title: work.title,
-            description: work.description,
-            director: work.director,
-            actors: work.actors,
-            additionalInfo: work.additionalInfo,
-            videoUrl: work.videoUrl,
-            thumbnailUrl: work.thumbnailUrl,
-        }));
-
-        formData.append('videoDTOList', JSON.stringify(videoDTOList));
-
-        const currentTime = new Date().toISOString();
-        formData.append('submissionTime', currentTime);
-
-        axios.post(`${Server_IP}/api/upload`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-        .then(response => {
-            console.log("제출 성공:", response.data);
-            navigate('/page3', { state: { works, memberInfo } });
-        })
-        .catch(error => {
-            console.error("제출 실패:", error);
-            alert('제출에 실패했습니다.');
-        });
+    const handleSubmit = (e) => {
+        e.preventDefault(); // 이벤트 방지
+    
+        if (validateRequiredFields()) {
+            // 회원 정보 백엔드에 저장
+            axios
+                .post(`${Server_IP}/api/saveMemberInfo`, memberInfo)
+                .then((response) => {
+                    if (response.status === 200) {
+                        // 회원 정보 저장 성공 후 작품 정보 업로드
+                        const formData = new FormData();
+                        formData.append("memberId", memberInfo.memberId);
+                        formData.append("userName", memberInfo.userName);
+                        formData.append("contact", memberInfo.contact);
+    
+                        works.forEach((work) => {
+                            formData.append('files', work.videoFile);
+                        });
+    
+                        const videoDTOList = works.map(work => ({
+                            title: work.title,
+                            description: work.description,
+                            director: work.director,
+                            actors: work.actors,
+                            additionalInfo: work.additionalInfo,
+                            videoUrl: work.videoUrl,
+                            thumbnailUrl: work.thumbnailUrl,
+                        }));
+    
+                        formData.append('videoDTOList', JSON.stringify(videoDTOList));
+    
+                        const currentTime = new Date().toISOString();
+                        formData.append('submissionTime', currentTime);
+    
+                        // 작품 정보 업로드
+                        return axios.post(`${Server_IP}/api/upload`, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        });
+                    }
+                })
+                .then(response => {
+                    console.log("제출 성공:", response.data);
+                    navigate('/page3', { state: { works, memberInfo } });
+                })
+                .catch(error => {
+                    console.error("제출 실패:", error);
+                    alert('제출에 실패했습니다.');
+                });
+        } else {
+            alert('모든 필수 항목을 입력해주세요.');
+        }
+    
         setConfirmModalOpen(false);
     };
-
+    
     return (
         <div>
             <Header />
