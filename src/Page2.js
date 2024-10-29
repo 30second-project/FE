@@ -220,7 +220,7 @@ function Page2() {
                                 </li>
                             </ul>
                             <ul className="box drop thumbnail-box">
-                                <li className="first"><span className='Tbr'>작품 썸네일</span> 첨부</li>
+                                <li className="first"><span className='Tbr'>작품</span> <span className='Tbr'>썸네일</span> <span className='Tbr'>첨부</span></li>
                                 <li className="show">
                                     <div className="showBorder">
                                         {work.thumbnail ? (

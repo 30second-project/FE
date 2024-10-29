@@ -10,7 +10,6 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
     const [videoUrl, setVideoUrl] = useState(existingFile ? existingFile.videoUrl : null);
     const [Text, setText] = useState("");
 
-    // 기존 파일이 있을 경우 상태 설정
     useEffect(() => {
         if (existingFile) {
             setFile(existingFile.videoFile);
@@ -33,7 +32,8 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
             setFile(newFile);
 
             const videoElement = document.createElement('video');
-            videoElement.src = URL.createObjectURL(newFile);
+            const newVideoUrl = URL.createObjectURL(newFile);
+            videoElement.src = newVideoUrl;
             videoElement.onloadedmetadata = () => {
                 const duration = Math.floor(videoElement.duration);
                 const minutes = Math.floor(duration / 60);
@@ -41,11 +41,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                 const formattedDuration = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
                 setVideoDuration(formattedDuration);
 
-                // 비디오 URL 설정
-                const newVideoUrl = URL.createObjectURL(newFile);
                 setVideoUrl(newVideoUrl);
-
-                // 부모 컴포넌트로 파일 정보 전달
                 onFileChange({
                     videoFile: newFile,
                     videoName: newFile.name,
@@ -53,6 +49,9 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                     videoDuration: formattedDuration,
                     videoUrl: newVideoUrl,
                 });
+                
+                // URL 해제
+                URL.revokeObjectURL(newVideoUrl);
             };
         }
     };
@@ -60,8 +59,8 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
     const fileRemove = () => {
         setFile(null);
         setVideoDuration('0:00');
-        setVideoUrl(null); // 비디오 URL 초기화
-        onFileChange(null); // 부모 컴포넌트에 null 전달
+        setVideoUrl(null);
+        onFileChange(null);
     };
 
     const formatFileSize = (sizeInBytes) => {
@@ -101,10 +100,9 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                 <div className="drop-file-preview">
                     <div className="drop-file-preview__item">
                         <div className="drop-file-preview__item__info">
-                            {/* 비디오 미리보기 추가 */}
                             {videoUrl && (
                                 <div className="video-preview">
-                                    <video className="uploaded-video">
+                                    <video className="uploaded-video"  playsInline>
                                         <source src={videoUrl} type="video/mp4" />
                                         브라우저가 비디오 태그를 지원하지 않습니다.
                                     </video>
@@ -123,7 +121,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
 
 DropFileInput.propTypes = {
     onFileChange: PropTypes.func.isRequired,
-    existingFile: PropTypes.object, // 기존 파일 정보 추가
+    existingFile: PropTypes.object,
 };
 
 DropFileInput.defaultProps = {
