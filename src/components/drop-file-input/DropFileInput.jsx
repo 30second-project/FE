@@ -30,10 +30,10 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
         const newFile = e.target.files[0];
         if (newFile) {
             setFile(newFile);
-
-            const newVideoUrl = URL.createObjectURL(newFile);
+    
+            const newVideoUrl = `${URL.createObjectURL(newFile)}#t=0.001`; 
             setVideoUrl(newVideoUrl);
-
+         
             const videoElement = document.createElement('video');
             videoElement.src = newVideoUrl;
             videoElement.onloadedmetadata = () => {
@@ -42,7 +42,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                 const seconds = duration % 60;
                 const formattedDuration = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
                 setVideoDuration(formattedDuration);
-
+    
                 onFileChange({
                     videoFile: newFile,
                     videoName: newFile.name,
@@ -50,12 +50,13 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                     videoDuration: formattedDuration,
                     videoUrl: newVideoUrl,
                 });
-
+                
                 // iOS 메모리 관리를 위해 URL 해제
                 URL.revokeObjectURL(newVideoUrl);
             };
         }
     };
+    
 
     const fileRemove = () => {
         setFile(null);
@@ -82,6 +83,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
 
         return () => window.removeEventListener("resize", updatePlaceholder);
     }, []);
+   
 
     return (
         <div ref={wrapperRef} className="drop-file-input" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDrop={onDrop}>

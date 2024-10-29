@@ -6,7 +6,7 @@ import "./css/Page1.css";
 import "./css/Page2.css";
 import circle2 from '../src/image/page2.png';
 import right from "./image/right.png";
-import left from "./image/left.png"; 
+import left from "./image/left.png";
 
 function Page2() {
     const Server_IP = process.env.REACT_APP_Server_IP;
@@ -15,18 +15,20 @@ function Page2() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
-    const [isChecked, setIsChecked] = useState(false); 
+    const [isChecked, setIsChecked] = useState(false);
     const { memberInfo } = location.state || {}; // 회원 정보 가져오기
-    
-    const navigate = useNavigate(); 
-    
+    const navigate = useNavigate();
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
     const openModal = (videoUrl) => {
-        setSelectedVideoUrl(videoUrl);
+        const adjustedVideoUrl = `${videoUrl}#t=0.001`;
+        setSelectedVideoUrl(adjustedVideoUrl); // 수정된 URL을 설정
         setIsModalOpen(true);
+        console.log("비디오:", adjustedVideoUrl); // 콘솔에 표시
+
     };
 
     const closeModal = () => {
@@ -35,7 +37,7 @@ function Page2() {
     };
 
     const handleCheckboxChange = () => {
-        setIsChecked(!isChecked); 
+        setIsChecked(!isChecked);
     };
 
     // 필수 필드 검증 함수
@@ -65,7 +67,7 @@ function Page2() {
     // 확인 모달의 확인 버튼 클릭 시 handleSubmit 호출
     const handleSubmit = (e) => {
         e.preventDefault(); // 이벤트 방지
-    
+
         if (validateRequiredFields()) {
             // 회원 정보 백엔드에 저장
             axios
@@ -77,26 +79,26 @@ function Page2() {
                         formData.append("memberId", memberInfo.memberId);
                         formData.append("userName", memberInfo.userName);
                         formData.append("contact", memberInfo.contact);
-    
+
                         works.forEach((work) => {
                             formData.append('files', work.videoFile);
                         });
-    
+
                         const videoDTOList = works.map(work => ({
                             title: work.title,
                             description: work.description,
                             director: work.director,
                             actors: work.actors,
                             additionalInfo: work.additionalInfo,
-                            videoUrl: work.videoUrl,
+                            videoUrl: work.videoUrl + '#t=0.001',
                             thumbnailUrl: work.thumbnailUrl,
                         }));
-    
+
                         formData.append('videoDTOList', JSON.stringify(videoDTOList));
-    
+
                         const currentTime = new Date().toISOString();
                         formData.append('submissionTime', currentTime);
-    
+
                         // 작품 정보 업로드
                         return axios.post(`${Server_IP}/api/upload`, formData, {
                             headers: {
@@ -116,10 +118,10 @@ function Page2() {
         } else {
             alert('모든 필수 항목을 입력해주세요.');
         }
-    
+
         setConfirmModalOpen(false);
     };
-    
+
     return (
         <div>
             <Header />
@@ -153,11 +155,11 @@ function Page2() {
                 </ul>
 
                 <ul className="box box2-2">
-                    <li className="first first2">저작권 이용<br /><span className="middle">·</span><br />일반 규정 및<br/> 개인정보 이용<br/> 동의</li>
+                    <li className="first first2">저작권 이용<br /><span className="middle">·</span><br />일반 규정 및<br /> 개인정보 이용<br /> 동의</li>
                     <li className="second">
                         <div className='notice'>
-                        저작권 이용 <br />
-                        1) 출품 유의 사항에 기재되어 있는 저작권 및 사용권 내용과 동의합니다. <br />
+                            저작권 이용 <br />
+                            1) 출품 유의 사항에 기재되어 있는 저작권 및 사용권 내용과 동의합니다. <br />
                             2) 출품작에 대한 저작권 및 소유권은 출품자에게 있으며, 수상 후에도 출품자에게 귀속됩니다. <br />
                             3) 주최사는 출품작을 영리 또는 비영리 목적으로 독점적 공표, 복제, 공연, 공중송신, 방송, 전송, 전시 및 배포(이하 ‘공표 등’) 할 수 있는 권리를 갖습니다. <br />
                             4) 출품작에 실질적인 개변이 없고, 내용, 형식, 제호의 동일성이 유지되는 범위 내에서 출품작의 포맷, 크기 등 형식을 수정 또는 변경할 수 있으며, 이를 주최사의 필요에 따라 활용할 수 있습니다. <br />
@@ -178,7 +180,7 @@ function Page2() {
                 </ul>
 
                 <div className='yes'>
-                    <input type='checkbox'  checked={isChecked} onChange={handleCheckboxChange}></input><span className="check-text">모든 내용을 확인하였으며 이에 동의합니다.</span>
+                    <input type='checkbox' checked={isChecked} onChange={handleCheckboxChange}></input><span className="check-text">모든 내용을 확인하였으며 이에 동의합니다.</span>
                 </div>
 
                 {works.map((work, index) => (
@@ -211,31 +213,28 @@ function Page2() {
                                     <div className="showBorder">
                                         {work.videoFile ? (
                                             <>
-                                             <video
-    onClick={() => {
-        const videoUrl = URL.createObjectURL(work.videoFile);
-        openModal(videoUrl);
+                                                <video
+                                                    onClick={() => {
+                                                        const videoUrl = URL.createObjectURL(work.videoFile);
+                                                        openModal(videoUrl);
 
-        // 모달이 닫힐 때 URL 해제
-        const handleModalClose = () => {
-            URL.revokeObjectURL(videoUrl);
-            document.removeEventListener('modalClose', handleModalClose);
-        };
+                                                        const handleModalClose = () => {
+                                                            URL.revokeObjectURL(videoUrl);
+                                                            document.removeEventListener('modalClose', handleModalClose);
+                                                        };
 
-        document.addEventListener('modalClose', handleModalClose);
-    }}
-    className="videoPreview"
-    muted
-    playsInline
-
-    preload="metadata" // 메타데이터를 미리 로드하여 첫 프레임 표시
->
-    <source
-        src={URL.createObjectURL(work.videoFile)} // URL 생성
-        type="video/mp4"
-    />
-    브라우저가 비디오 태그를 지원하지 않습니다.
-</video>
+                                                        document.addEventListener('modalClose', handleModalClose);
+                                                    }}
+                                                    className="videoPreview"
+                                                    muted
+                                                    playsInline
+                                                >
+                                                    <source
+                                                        src={`${URL.createObjectURL(work.videoFile)}#t=0.001`}
+                                                        type="video/mp4"
+                                                    />
+                                                    브라우저가 비디오 태그를 지원하지 않습니다.
+                                                </video>
 
                                                 <div>
                                                     <span className="font">{work.videoFile.name || '업로드되지 않음'}&nbsp; ({work.videoDuration || '0:00'})</span><br />
@@ -254,7 +253,7 @@ function Page2() {
                                         {work.thumbnail ? (
                                             <>
                                                 <img
-                                                    src={URL.createObjectURL(work.thumbnail)} 
+                                                    src={URL.createObjectURL(work.thumbnail)}
                                                     alt="썸네일"
                                                     className="plusImage"
                                                 />
@@ -309,16 +308,16 @@ function Page2() {
                         <div className="modal-content2">
                             <h3 className='modal-text1'>!&nbsp;&nbsp;잠깐&nbsp;&nbsp;!</h3>
                             <p className='modal-text2'>
-                            출품 정보를 모두 정확하게 기재하셨나요?<br></br>
-                            출품 후에는 내용 수정 및 출품 취소가<br/> 
-                            불가능합니다.
+                                출품 정보를 모두 정확하게 기재하셨나요?<br></br>
+                                출품 후에는 내용 수정 및 출품 취소가<br />
+                                불가능합니다.
                             </p>
                             <p className='modal-text3'>
                                 출품하시겠습니까?
                             </p>
                             <div className='modal-submit'>
-                            <button onClick={handleSubmit} className='resultBtn1'>확인</button>
-                            <button onClick={() => setConfirmModalOpen(false)} className='resultBtn2'>취소</button>
+                                <button onClick={handleSubmit} className='resultBtn1'>확인</button>
+                                <button onClick={() => setConfirmModalOpen(false)} className='resultBtn2'>취소</button>
                             </div>
                         </div>
                     </div>
