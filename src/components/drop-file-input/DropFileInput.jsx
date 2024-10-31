@@ -8,7 +8,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
     const [file, setFile] = useState(existingFile ? existingFile.videoFile : null);
     const [videoDuration, setVideoDuration] = useState(existingFile ? existingFile.videoDuration : '0:00');
     const [videoUrl, setVideoUrl] = useState(existingFile ? existingFile.videoUrl : null);
-    const [posterUrl, setPosterUrl] = useState(null);
+    const [posterUrl, setPosterUrl] = useState(null); // 포스터 URL 상태 추가
     const [Text, setText] = useState("");
 
     useEffect(() => {
@@ -16,12 +16,12 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
             setFile(existingFile.videoFile);
             setVideoDuration(existingFile.videoDuration);
             setVideoUrl(existingFile.videoUrl);
-            setPosterUrl(existingFile.posterUrl);
+            setPosterUrl(existingFile.posterUrl); // 기존 포스터 URL 설정
         } else {
             setFile(null);
             setVideoDuration('0:00');
             setVideoUrl(null);
-            setPosterUrl(null);
+            setPosterUrl(null); // 포스터 URL 초기화
         }
     }, [existingFile]);
 
@@ -46,9 +46,11 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                 const formattedDuration = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
                 setVideoDuration(formattedDuration);
 
+                // 비디오의 첫 번째 프레임을 포스터로 사용하기 위해 currentTime을 0으로 설정
                 videoElement.currentTime = 0;
 
                 videoElement.addEventListener('seeked', () => {
+                    // 비디오의 첫 번째 프레임을 포스터 URL로 설정
                     setPosterUrl(newVideoUrl);
                 });
 
@@ -58,10 +60,11 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                     videoSize: newFile.size,
                     videoDuration: formattedDuration,
                     videoUrl: newVideoUrl,
-                    posterUrl: newVideoUrl,
+                    posterUrl: newVideoUrl, // 포스터 URL 전달
                 });
                 
-                setTimeout(() => URL.revokeObjectURL(newVideoUrl), 1000);  // URL 해제 지연
+                // iOS 메모리 관리를 위해 URL 해제
+                URL.revokeObjectURL(newVideoUrl);
             };
         }
     };
@@ -70,7 +73,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
         setFile(null);
         setVideoDuration('0:00');
         setVideoUrl(null);
-        setPosterUrl(null);
+        setPosterUrl(null); // 포스터 URL 초기화
         onFileChange(null);
     };
 
@@ -105,7 +108,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                             ※ 모든 형식의 비디오를 지원합니다.
                         </p>
                     </div>
-                    <input type="file" onChange={onFileDrop} accept="*" capture /> {/* accept와 capture 속성 수정 */}
+                    <input type="file" onChange={onFileDrop} accept="video/*" />
                 </>
             ) : (
                 <div className="drop-file-preview">
@@ -117,7 +120,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                                         className="uploaded-video" 
                                         muted 
                                         playsInline 
-                                        poster={posterUrl} 
+                                        poster={posterUrl} // 포스터 추가
                                     >
                                         <source src={videoUrl} type="video/mp4" />
                                         브라우저가 비디오 태그를 지원하지 않습니다.
