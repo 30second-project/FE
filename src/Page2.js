@@ -82,7 +82,11 @@ function Page2() {
 
                         works.forEach((work) => {
                             formData.append('files', work.videoFile);
+                            if (work.thumbnail) {
+                                formData.append('Thumbnail', work.thumbnail); 
+                            }
                         });
+                        
 
                         const videoDTOList = works.map(work => ({
                             title: work.title,

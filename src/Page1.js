@@ -34,9 +34,9 @@ function Page1({ works, setWorks }) {
                 OTP_TOKEN: 'YOUR_OTP_TOKEN'
             };
 
-            // URL에 쿼리 파라미터로 추가
-            const searchParams = new URLSearchParams(urlParams);
-            window.location.replace(`${window.location.pathname}?${searchParams.toString()}`);
+            // // URL에 쿼리 파라미터로 추가
+            // const searchParams = new URLSearchParams(urlParams);
+            // window.location.replace(`${window.location.pathname}?${searchParams.toString()}`);
         } else {
             // URL 쿼리 파라미터로 데이터를 읽어오기
             const userNameFromUrl = queryParams.get('USER_NAME') || '';
