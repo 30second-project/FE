@@ -211,6 +211,7 @@ function Page1({ works, setWorks }) {
                         <input 
                             type="text" 
                             value={memberInfo.userName} 
+                            required
                             placeholder="성함을 입력해주세요" 
                             onChange={(e) => setMemberInfo({ ...memberInfo, userName: e.target.value })} 
                         />
