@@ -206,7 +206,7 @@ function Page2() {
                         />
                     </li>
                 </ul>
-                <ul className="box box3">
+                <ul className="box box3 boxend">
                     <li className="first">연락처<span className="red">*</span></li>
                     <li className="second">
                         <input 
