@@ -155,13 +155,21 @@ function Page1({ works, setWorks }) {
     }, []);
 
     const validateRequiredFields = () => {
+        // 회원 정보 필수 입력 체크
+        if (!memberInfo.userName.trim() || !memberInfo.memberId.trim() || !memberInfo.contact.trim()) {
+            return false; // 회원 정보 중 하나라도 비어있으면 false 반환
+        }
+    
+        // 작품 정보 필수 입력 체크
         for (let work of works) {
             if (!work.title.trim() || !work.description.trim() || !work.director.trim() || !work.videoFile) {
-                return false;
+                return false; // 작품 정보 중 하나라도 비어있으면 false 반환
             }
         }
-        return true;
+        
+        return true; // 모든 필수 항목이 입력되었으면 true 반환
     };
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
