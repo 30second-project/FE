@@ -28,46 +28,48 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
     const onDrop = () => wrapperRef.current.classList.remove('dragover');
-
     const onFileDrop = (e) => {
         const newFile = e.target.files[0];
         if (newFile) {
             setFile(newFile);
-
-            const newVideoUrl = `${URL.createObjectURL(newFile)}#t=0.001`; 
+    
+            const newVideoUrl = URL.createObjectURL(newFile); 
             setVideoUrl(newVideoUrl);
-         
+    
             const videoElement = document.createElement('video');
             videoElement.src = newVideoUrl;
+    
             videoElement.onloadedmetadata = () => {
                 const duration = Math.floor(videoElement.duration);
                 const minutes = Math.floor(duration / 60);
                 const seconds = duration % 60;
-                const formattedDuration = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                const formattedDuration = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`; // 여기에 formattedDuration을 정의
+    
                 setVideoDuration(formattedDuration);
-
+    
                 // 비디오의 첫 번째 프레임을 포스터로 사용하기 위해 currentTime을 0으로 설정
-                videoElement.currentTime = 0;
-
+                videoElement.currentTime = 0.001;
+    
                 videoElement.addEventListener('seeked', () => {
-                    // 비디오의 첫 번째 프레임을 포스터 URL로 설정
                     setPosterUrl(newVideoUrl);
                 });
-
+    
                 onFileChange({
                     videoFile: newFile,
                     videoName: newFile.name,
                     videoSize: newFile.size,
-                    videoDuration: formattedDuration,
+                    videoDuration: formattedDuration, // 이제 정의된 formattedDuration을 사용
                     videoUrl: newVideoUrl,
                     posterUrl: newVideoUrl, // 포스터 URL 전달
                 });
-                
+    
                 // iOS 메모리 관리를 위해 URL 해제
                 URL.revokeObjectURL(newVideoUrl);
             };
         }
     };
+    
+    
 
     const fileRemove = () => {
         setFile(null);
@@ -120,7 +122,7 @@ const DropFileInput = ({ onFileChange, existingFile }) => {
                                         className="uploaded-video" 
                                         muted 
                                         playsInline 
-                                        poster={posterUrl} // 포스터 추가
+                                       
                                     >
                                         <source src={videoUrl} type="video/mp4" />
                                         브라우저가 비디오 태그를 지원하지 않습니다.
