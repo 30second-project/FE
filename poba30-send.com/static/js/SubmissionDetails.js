@@ -26,9 +26,10 @@ function SubmissionDetails({ submission, selectedVideo, onClose }) {
                 <h2>{submission.userName}의 출품작 상세 정보</h2>
 
                 <div className='page2'>
-                    <button onClick={onClose} className="close-button">닫기</button>
                     <p className="info">출품정보 확인</p>
                     <ul className="box box1">
+               <button onClick={onClose} className="close-button">닫기</button>
+
                         <li className="first">작품제목<span className="red">*</span></li>
                         <li className="second">{selectedVideo.title}</li>
                     </ul>

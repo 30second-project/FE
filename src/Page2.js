@@ -183,9 +183,43 @@ function Page2() {
                     <input type='checkbox' checked={isChecked} onChange={handleCheckboxChange}></input><span className="check-text">모든 내용을 확인하였으며 이에 동의합니다.</span>
                 </div>
 
+                <p className="info">1.출품자 정보</p>
+                <ul className="box box1">
+                    <li className="first">성함<span className="red">*</span></li>
+                    <li className="second">
+                        <input 
+                            type="text" 
+                            value={memberInfo.userName} 
+                            required
+                            placeholder="성함을 입력해주세요" 
+                        />
+                    </li>
+                </ul>
+                <ul className="box box2">
+                    <li className="first">아이디<span className="red">*</span></li>
+                    <li className="second">
+                        <input 
+                            type="text" 
+                            value={memberInfo.memberId} 
+                            required
+                            placeholder="ID를 입력해주세요" 
+                        />
+                    </li>
+                </ul>
+                <ul className="box box3">
+                    <li className="first">연락처<span className="red">*</span></li>
+                    <li className="second">
+                        <input 
+                            type="text" 
+                            value={memberInfo.contact} 
+                            required
+                            placeholder="연락처를 입력해주세요" 
+                        />
+                    </li>
+                </ul>
                 {works.map((work, index) => (
                     <div key={index} className='page2'>
-                        <p className="info">출품정보 확인</p>
+                        <p className="info">2.출품정보 확인</p>
                         <ul className="box box1">
                             <li className="first">작품제목<span className="red">*</span></li>
                             <li className="second">{work.title}</li>

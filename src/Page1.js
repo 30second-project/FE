@@ -18,25 +18,68 @@ function Page1({ works, setWorks }) {
 
     const navigate = useNavigate();
 
-    const [memberInfo, setMemberInfo] = useState({
-        userName: location.state?.memberInfo?.userName || "",
-        memberId: location.state?.memberInfo?.memberId || "",
-        contact: location.state?.memberInfo?.contact || ""
-    });
-
     const [otpToken, setOtpToken] = useState(""); // OTP 토큰 값
-    
+    const [memberInfo, setMemberInfo] = useState({ userName: '', memberId: '', contact: '' });
+
     useEffect(() => {
-        if (otpToken) {
-            axios
-                .get(`${Server_IP}/api/integrateUser`, { params: { otpToken: otpToken } })
-                .then((response) => {
-                    const { userName, memberId, contact } = response.data;
-                    setMemberInfo({ userName, memberId, contact });
-                })
-                .catch((error) => console.error("사용자 정보 연동 실패:", error));
+        const queryParams = new URLSearchParams(location.search);
+
+        // POST로 넘어온 데이터를 URL에 포함시키도록 리다이렉트 처리
+        if (!queryParams.has("USER_NAME") || !queryParams.has("mbrId")) {
+            // 만약 쿼리 파라미터에 값이 없다면 POST로 받은 데이터라고 가정
+            const urlParams = {
+                USER_NAME: memberInfo.userName,
+                mbrId: memberInfo.memberId,
+                contact: '',
+                OTP_TOKEN: 'YOUR_OTP_TOKEN'
+            };
+
+            // URL에 쿼리 파라미터로 추가
+            const searchParams = new URLSearchParams(urlParams);
+            window.location.replace(`${window.location.pathname}?${searchParams.toString()}`);
+        } else {
+            // URL 쿼리 파라미터로 데이터를 읽어오기
+            const userNameFromUrl = queryParams.get('USER_NAME') || '';
+            const memberIdFromUrl = queryParams.get('mbrId') || '';
+            const contactFromUrl = queryParams.get('contact') || '';
+            const otpTokenFromUrl = queryParams.get('OTP_TOKEN') || '';
+
+            // 가져온 데이터를 상태에 저장
+            setMemberInfo({
+                userName: userNameFromUrl,
+                memberId: memberIdFromUrl,
+                contact: contactFromUrl,
+                otpToken: otpTokenFromUrl
+            });
         }
-    }, [otpToken, Server_IP]);
+    }, [location.search]);
+
+    useEffect(() => {
+        if (memberInfo.otpToken) {
+            const backendUrl = `${Server_IP}/api/vendorSsoGate`;
+
+            axios.get(backendUrl, {
+                params: { svid: memberInfo.otpToken },
+                headers: {
+                    "Accept": "application/json"
+                },
+                withCredentials: true
+            })
+            .then((response) => {
+                const user = response.data.resultMap.user;
+                const { mbrNm: userName, mbrId: memberId, hmeTelNo: contact } = user;
+
+                setMemberInfo({ userName, memberId, contact });
+
+                localStorage.setItem("userName", userName);
+                localStorage.setItem("memberId", memberId);
+                localStorage.setItem("contact", contact);
+            })
+            .catch((error) => {
+                console.error("제휴사 정보 연동 실패", error);
+            });
+        }
+    }, [memberInfo.otpToken]);
 
     const updateWorkInfo = (index, data) => {
         const updatedWorks = [...works];
@@ -85,7 +128,6 @@ function Page1({ works, setWorks }) {
         setWorks(newWorks);
     };
 
-    // 페이지 추가 함수
     const handleAddPlusPage = () => {
         if (works.length < 3) {
             setWorks([...works, {
@@ -148,7 +190,7 @@ function Page1({ works, setWorks }) {
 
         return () => window.removeEventListener("resize", updatePlaceholder);
     }, []);
-
+ 
     return (
         <div>
             <Header />
@@ -162,15 +204,15 @@ function Page1({ works, setWorks }) {
             </ul>
             <hr />
             <section>
-            <p className="info">1.출품자 정보</p>
-            <ul className="box box1">
+                <p className="info">1.출품자 정보</p>
+                <ul className="box box1">
                     <li className="first">성함<span className="red">*</span></li>
                     <li className="second">
                         <input 
                             type="text" 
-                            value={memberInfo.userName}  // 초기값을 빈 문자열로 설정
-                            placeholder="POBA누리 연동 자동 입력" 
-                            onChange={(e) => setMemberInfo({ ...memberInfo, userName: e.target.value })} // onChange 핸들러 추가
+                            value={memberInfo.userName} 
+                            placeholder="성함을 입력해주세요" 
+                            onChange={(e) => setMemberInfo({ ...memberInfo, userName: e.target.value })} 
                         />
                     </li>
                 </ul>
@@ -179,9 +221,10 @@ function Page1({ works, setWorks }) {
                     <li className="second">
                         <input 
                             type="text" 
-                            value={memberInfo.memberId}  // 초기값을 빈 문자열로 설정
-                            placeholder="POBA누리 연동 자동 입력" 
-                            onChange={(e) => setMemberInfo({ ...memberInfo, memberId: e.target.value })} // onChange 핸들러 추가
+                            value={memberInfo.memberId} 
+                            required
+                            placeholder="ID를 입력해주세요" 
+                            onChange={(e) => setMemberInfo({ ...memberInfo, memberId: e.target.value })} 
                         />
                     </li>
                 </ul>
@@ -190,12 +233,14 @@ function Page1({ works, setWorks }) {
                     <li className="second">
                         <input 
                             type="text" 
-                            value={memberInfo.contact}  // 초기값을 빈 문자열로 설정
-                            placeholder="POBA누리 연동 자동 입력" 
-                            onChange={(e) => setMemberInfo({ ...memberInfo, contact: e.target.value })} // onChange 핸들러 추가
+                            value={memberInfo.contact} 
+                            required
+                            placeholder="연락처를 입력해주세요" 
+                            onChange={(e) => setMemberInfo({ ...memberInfo, contact: e.target.value })} 
                         />
                     </li>
                 </ul>
+                <p className='Tand'>출품자 정보가 정확하지 않을 경우, 심사에서 제외될 수 있습니다.</p>
                 <p className="info">2.작품정보 <span className="three">(최대 3개까지 출품가능합니다)</span></p>
                 {works.map((work, index) => (
                     <div key={index}>

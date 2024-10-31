@@ -11,13 +11,25 @@ const SubmissionTable = () => {
     const [category, setCategory] = useState("name");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedSubmission, setSelectedSubmission] = useState(null);
+    const [selectedVideo, setSelectedVideo] = useState(null);
+    const [searchResults, setSearchResults] = useState([]);
 
     const fetchSubmissions = async () => {
         try {
             const response = await axios.get(`${Server_IP}/api/submissions`);
             console.log("서버에서 받은 데이터:", response.data);
+
             if (Array.isArray(response.data)) {
-                setSubmissions(response.data);
+                const uniqueSubmissions = Array.from(new Map(response.data.map(submission => [submission.memberId, submission])).values());
+
+                const submissionsWithVideos = await Promise.all(
+                    uniqueSubmissions.map(async (submission) => {
+                        const videos = await fetchVideoData(submission.memberId);
+                        submission.submissionTime = formatSubmissionTime(submission.submissionTime);
+                        return { ...submission, videos };
+                    })
+                );
+                setSubmissions(submissionsWithVideos);
             } else {
                 console.error("제출 데이터 형식이 올바르지 않습니다:", response.data);
                 setSubmissions([]);
@@ -26,46 +38,107 @@ const SubmissionTable = () => {
             console.error("제출 데이터를 불러오는 중 오류가 발생했습니다!", error);
         }
     };
-    
+
+    const formatSubmissionTime = (timeArray) => {
+        if (!Array.isArray(timeArray) || timeArray.length < 7) {
+            console.error("유효하지 않은 submissionTime:", timeArray);
+            return '';
+        }
+        const [year, month, day, hours, minutes, seconds] = timeArray;
+        return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    };
+
     const convertToKST = (submissionTime) => {
+        if (typeof submissionTime !== 'string') {
+            console.error("submissionTime은 문자열이어야 합니다:", submissionTime);
+            return '';
+        }
         const utcSubmissionTime = submissionTime.endsWith('Z') ? submissionTime : `${submissionTime}Z`;
         const curr = new Date(utcSubmissionTime);
-        return curr.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+        return isNaN(curr.getTime()) ? '' : curr.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
     };
 
     const handleSearch = async () => {
         try {
             const response = await axios.get(`${Server_IP}/api/submissions/search?keyword=${searchKeyword}&category=${category}`);
-            if (Array.isArray(response.data)) {
-                setSubmissions(response.data);
+            console.log("검색 결과:", response.data);
+
+            if (Array.isArray(response.data) && response.data.length > 0) {
+                const uniqueSubmissions = Array.from(new Map(response.data.map(submission => [submission.memberId, submission])).values());
+                const submissionsWithVideos = await Promise.all(uniqueSubmissions.map(async (submission) => {
+                    const videos = await fetchVideoData(submission.memberId);
+                    return {
+                        ...submission,
+                        videos,
+                        submissionTime: formatSubmissionTime(submission.submissionTime)
+                    };
+                }));
+
+                setSubmissions(submissionsWithVideos);
+                setSearchResults(submissionsWithVideos);
             } else {
-                console.error("검색 결과 형식이 올바르지 않습니다:", response.data);
+                console.log("검색된 제출작이 없습니다.");
                 setSubmissions([]);
+                setSearchResults([]);
             }
         } catch (error) {
             console.error("제출을 검색하는 중 오류가 발생했습니다!", error);
         }
     };
 
-    const handleDownloadExcelWithSearch = async () => {
+    const handleDownloadExcel = async (isSearchResults = false) => {
         try {
-            const response = await axios.get(`${Server_IP}/api/submissions/download`, {
+            const url = isSearchResults 
+                ? `${Server_IP}/api/submissions/download??keyword=${searchKeyword}&category=${category}`
+                : `${Server_IP}/api/submissions/download`;
+    
+            // 데이터가 존재하지 않는 경우 URL을 정의하기 전 check
+            if (isSearchResults && searchResults.length === 0) {
+                console.error("검색 결과가 없습니다. 엑셀 다운로드를 진행할 수 없습니다.");
+                alert("검색 결과가 없습니다. 엑셀 다운로드를 진행할 수 없습니다."); // 사용자 알림
+                return; // 다운로드 중지
+            }
+    
+            const response = await axios.get(url, {
                 responseType: 'blob',
             });
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+    
+            const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', '제출리스트_검색결과.xlsx');
+            link.href = blobUrl;
+            link.setAttribute('download', isSearchResults ? '제출리스트_검색결과.xlsx' : '제출리스트_전체.xlsx');
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         } catch (error) {
-            console.error("검색된 엑셀 파일 다운로드 중 오류가 발생했습니다!", error);
+            console.error(isSearchResults ? "검색된 엑셀 파일 다운로드 중 오류가 발생했습니다!" : "전체 엑셀 파일 다운로드 중 오류가 발생했습니다!", error);
+            alert("엑셀 다운로드 중 오류가 발생했습니다!"); // 사용자 알림
+        }
+    };
+    
+    
+
+    const fetchVideoData = async (memberId) => {
+        try {
+            const response = await axios.get(`${Server_IP}/api/submission/videos/${memberId}`);
+            if (Array.isArray(response.data)) {
+                console.log("가져온 비디오 데이터:", response.data);
+                return response.data;
+            } else {
+                console.error("비디오 데이터 형식이 올바르지 않습니다:", response.data);
+                return [];
+            }
+        } catch (error) {
+            console.error("Error fetching video data:", error);
+            return [];
         }
     };
 
-    const openDetailsModal = (submission) => {
-        setSelectedSubmission(submission);
+    const openDetailsModal = async (submission, videoIndex) => {
+        const videos = await fetchVideoData(submission.memberId);
+        const selectedVideo = videos[videoIndex] || {};
+        setSelectedSubmission({ ...submission, videos });
+        setSelectedVideo(selectedVideo);
         setIsModalOpen(true);
     };
 
@@ -88,7 +161,10 @@ const SubmissionTable = () => {
                     setCategory={setCategory}
                     handleSearch={handleSearch}
                 />
-                <button className="download-btn" onClick={handleDownloadExcelWithSearch} disabled={submissions.length === 0}>
+                <button 
+                    className="download-btn" 
+                    onClick={() => handleDownloadExcel(searchResults.length > 0)}
+                >
                     엑셀 다운로드
                 </button>
             </div>
@@ -108,49 +184,44 @@ const SubmissionTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                { submissions.map((submission, index) => {
-    // 비디오 정보를 직접 가져오기
-    const displayedVideos = [
-        { title: submission.title, videoUrl: submission.videoUrl }, // 첫 번째 비디오
-        // 여기서 두 번째, 세 번째 비디오를 추가해야 합니다.
-        // 예를 들어 submission.videos가 있으면 여기서 추가.
-        { title: submission.videos[1]?.title, videoUrl: submission.videos[1]?.videoUrl }, // 두 번째 비디오
-        { title: submission.videos[2]?.title, videoUrl: submission.videos[2]?.videoUrl }  // 세 번째 비디오
-    ];
+                    {submissions.map((submission, index) => {
+                        const displayedVideos = [
+                            submission.videos?.[0]?.title || '없음',
+                            submission.videos?.[1]?.title || '없음',
+                            submission.videos?.[2]?.title || '없음'
+                        ];
 
-    // 각 비디오 제목을 로그로 출력
-    displayedVideos.forEach((video, videoIndex) => {
-        console.log(`출품작${videoIndex + 1} 제목:`, video.title || '제목 없음');
-    });
-
-    return (
-        <tr key={submission.id}>
-            <td>{index + 1}</td>
-            <td>{convertToKST(submission.submissionTime)}</td>
-            <td>{submission.userName}</td>
-            <td>{submission.memberId}</td>
-            <td>{submission.contact || "연락처 없음"}</td>
-            {Array.from({ length: 3 }, (_, videoIndex) => (
-                <td key={videoIndex}>
-                    {displayedVideos[videoIndex]?.title ? (
-                        <span onClick={() => openDetailsModal(submission)}>
-                            {displayedVideos[videoIndex].title}
-                        </span>
-                    ) : (
-                        '없음'
-                    )}
-                </td>
-            ))}
-            <td>{submission.agreement ? "확인" : "확인"}</td>
-        </tr>
-    );
-})}
-
+                        return (
+                            <tr key={submission.id}>
+                                <td>{index + 1}</td>
+                                <td>{convertToKST(submission.submissionTime)}</td>
+                                <td>{submission.userName}</td>
+                                <td>{submission.memberId}</td>
+                                <td>{submission.contact || "연락처 없음"}</td>
+                                {displayedVideos.map((videoTitle, videoIndex) => (
+                                    <td key={videoIndex}>
+                                        {videoTitle !== '없음' ? (
+                                            <span onClick={() => openDetailsModal(submission, videoIndex)}>
+                                                {videoTitle}
+                                            </span>
+                                        ) : (
+                                            '없음'
+                                        )}
+                                    </td>
+                                ))}
+                                <td>{submission.agreement ? "확인" : "확인"}</td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
 
             {isModalOpen && selectedSubmission && (
-                <SubmissionDetails submission={selectedSubmission} onClose={closeModal} />
+                <SubmissionDetails
+                    submission={selectedSubmission}
+                    selectedVideo={selectedVideo}
+                    onClose={closeModal}
+                />
             )}
         </div>
     );
