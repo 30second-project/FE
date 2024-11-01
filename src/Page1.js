@@ -240,6 +240,7 @@ function Page1({ works, setWorks }) {
                         />
                     </li>
                 </ul>
+               
                 <p className='info_2'>출품자 정보가 정확하지 않을 경우, 심사에서 제외될 수 있습니다.</p>
 
                 <p className="info">2.작품정보 <span className="three">(최대 3개까지 출품가능합니다)</span></p>

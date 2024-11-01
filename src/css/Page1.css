@@ -267,7 +267,8 @@ padding-left: 30px;
 .info_2{
     font-family: boxtext;
     margin-bottom: 70px;
-
+width: 100%;
+float: left;
 }
 button{
     display: block;
@@ -282,6 +283,9 @@ button{
 }
 @media (min-width: 768px) and (max-width: 1024px) {
     /* circle zone */
+    .info{
+        margin-top: 50px;
+    }
     .circlezone{
     margin-top: 20px;
     }
@@ -359,7 +363,7 @@ button{
     .box3{
         float: left;
         width:99%;
-        margin-bottom: 50px;
+       
     }
     
     video {
