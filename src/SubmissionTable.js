@@ -30,9 +30,11 @@ const SubmissionTable = () => {
                     })
                 );
                 setSubmissions(submissionsWithVideos);
+                setSearchResults(submissionsWithVideos); // 전체 데이터도 searchResults에 저장
             } else {
                 console.error("제출 데이터 형식이 올바르지 않습니다:", response.data);
                 setSubmissions([]);
+                setSearchResults([]); // 검색 결과도 초기화
             }
         } catch (error) {
             console.error("제출 데이터를 불러오는 중 오류가 발생했습니다!", error);
@@ -59,12 +61,21 @@ const SubmissionTable = () => {
     };
 
     const handleSearch = async () => {
+        if (!searchKeyword.trim()) {
+            // 검색어가 없으면 전체 제출 데이터를 가져옴
+            await fetchSubmissions();
+            return; // 추가적인 검색 처리 필요 없음
+        }
+    
         try {
             const response = await axios.get(`${Server_IP}/api/submissions/search?keyword=${searchKeyword}&category=${category}`);
             console.log("검색 결과:", response.data);
-
+    
             if (Array.isArray(response.data) && response.data.length > 0) {
-                const uniqueSubmissions = Array.from(new Map(response.data.map(submission => [submission.memberId, submission])).values());
+                // category에 따라 필터링 키 설정
+                const key = category === "name" ? "userName" : "memberId";
+                
+                const uniqueSubmissions = Array.from(new Map(response.data.map(submission => [submission[key], submission])).values());
                 const submissionsWithVideos = await Promise.all(uniqueSubmissions.map(async (submission) => {
                     const videos = await fetchVideoData(submission.memberId);
                     return {
@@ -73,31 +84,26 @@ const SubmissionTable = () => {
                         submissionTime: formatSubmissionTime(submission.submissionTime)
                     };
                 }));
-
+    
                 setSubmissions(submissionsWithVideos);
-                setSearchResults(submissionsWithVideos);
+                setSearchResults(submissionsWithVideos); // 검색 결과 저장
             } else {
                 console.log("검색된 제출작이 없습니다.");
                 setSubmissions([]);
-                setSearchResults([]);
+                setSearchResults([]); // 검색 결과도 초기화
             }
         } catch (error) {
             console.error("제출을 검색하는 중 오류가 발생했습니다!", error);
         }
     };
-
-    const handleDownloadExcel = async (isSearchResults = false) => {
-        try {
-            const url = isSearchResults 
-                ? `${Server_IP}/api/submissions/download??keyword=${searchKeyword}&category=${category}`
-                : `${Server_IP}/api/submissions/download`;
     
-            // 데이터가 존재하지 않는 경우 URL을 정의하기 전 check
-            if (isSearchResults && searchResults.length === 0) {
-                console.error("검색 결과가 없습니다. 엑셀 다운로드를 진행할 수 없습니다.");
-                alert("검색 결과가 없습니다. 엑셀 다운로드를 진행할 수 없습니다."); // 사용자 알림
-                return; // 다운로드 중지
-            }
+
+    const handleDownloadExcel = async () => {
+        try {
+            // 검색 결과가 있을 경우 해당 키워드로 다운로드 요청
+            const url = searchResults.length > 0 
+                ? `${Server_IP}/api/submissions/download?keyword=${searchKeyword}&category=${category}`
+                : `${Server_IP}/api/submissions/download`; // 검색 결과가 없으면 전체 데이터 다운로드 요청
     
             const response = await axios.get(url, {
                 responseType: 'blob',
@@ -106,17 +112,15 @@ const SubmissionTable = () => {
             const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = blobUrl;
-            link.setAttribute('download', isSearchResults ? '제출리스트_검색결과.xlsx' : '제출리스트_전체.xlsx');
+            link.setAttribute('download', searchResults.length > 0 ? '제출리스트_검색결과.xlsx' : '제출리스트_전체.xlsx');
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         } catch (error) {
-            console.error(isSearchResults ? "검색된 엑셀 파일 다운로드 중 오류가 발생했습니다!" : "전체 엑셀 파일 다운로드 중 오류가 발생했습니다!", error);
+            console.error(searchResults.length > 0 ? "검색된 엑셀 파일 다운로드 중 오류가 발생했습니다!" : "전체 엑셀 파일 다운로드 중 오류가 발생했습니다!", error);
             alert("엑셀 다운로드 중 오류가 발생했습니다!"); // 사용자 알림
         }
     };
-    
-    
 
     const fetchVideoData = async (memberId) => {
         try {
@@ -163,7 +167,7 @@ const SubmissionTable = () => {
                 />
                 <button 
                     className="download-btn" 
-                    onClick={() => handleDownloadExcel(searchResults.length > 0)}
+                    onClick={handleDownloadExcel}
                 >
                     엑셀 다운로드
                 </button>

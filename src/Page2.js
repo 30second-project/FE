@@ -82,7 +82,11 @@ function Page2() {
 
                         works.forEach((work) => {
                             formData.append('files', work.videoFile);
+                            if (work.thumbnail) {
+                                formData.append('Thumbnail', work.thumbnail); 
+                            }
                         });
+                        
 
                         const videoDTOList = works.map(work => ({
                             title: work.title,
@@ -345,6 +349,7 @@ function Page2() {
                                 출품 정보를 모두 정확하게 기재하셨나요?<br></br>
                                 출품 후에는 내용 수정 및 출품 취소가<br />
                                 불가능합니다.
+                                {/* 출품에는 10초 정도 소요됩니다. */}
                             </p>
                             <p className='modal-text3'>
                                 출품하시겠습니까?
